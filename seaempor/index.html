@@ -3,8 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sea Emperor Restaurant | Chennai</title>
     
+    <!-- SEO: Optimized Title -->
+    <title>Sea Emperor Restaurant | Best Mandi & Biryani in Madipakkam, Chennai</title>
+    
+    <!-- SEO: Meta Description -->
+    <meta name="description" content="Experience authentic Arabian Mandi, Biryani, and Tandoor at Sea Emperor Restaurant in Madipakkam, Chennai. Order online or book a table for the best dining experience.">
+    
+    <!-- SEO: Keywords -->
+    <meta name="keywords" content="Sea Emperor, Chennai Restaurant, Madipakkam Dining, Arabian Mandi Chennai, Biryani Madipakkam, Tandoor, Party Hall Chennai, Seafood Restaurant, Best Restaurant near me">
+    
+    <!-- SEO: Canonical URL (Prevents duplicate content issues) -->
+    <link rel="canonical" href="https://www.seaemperorchennai.com" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="restaurant.restaurant">
+    <meta property="og:url" content="https://www.seaemperorchennai.com/">
+    <meta property="og:title" content="Sea Emperor Restaurant | Authentic Mandi & Biryani">
+    <meta property="og:description" content="Serving the finest Arabian & Indian cuisine in Madipakkam since 2010. Try our famous Kuzhi Mandi today!">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.seaemperorchennai.com/">
+    <meta property="twitter:title" content="Sea Emperor Restaurant | Authentic Mandi & Biryani">
+    <meta property="twitter:description" content="Serving the finest Arabian & Indian cuisine in Madipakkam since 2010.">
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80">
+
     <!-- React & ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -48,6 +73,7 @@
             font-family: 'Playfair Display', serif;
         }
         .hero-bg {
+            /* Used a high quality food image that represents the brand */
             background-image: linear-gradient(rgba(77, 77, 79, 0.7), rgba(36, 172, 158, 0.4)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
             background-size: cover;
             background-position: center;
@@ -78,6 +104,53 @@
 <body class="bg-gray-50 text-gray-800">
 
     <div id="root"></div>
+
+    <!-- JSON-LD Structured Data for Local SEO (Google Knowledge Graph) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "name": "Sea Emperor Restaurant",
+      "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "priceRange": "₹1,000-1,200",
+      "telephone": "08939716362",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Plot no. 11, 12, Bazaar Main Rd, Ram Nagar Police check post, Ram Nagar South",
+        "addressLocality": "Madipakkam",
+        "addressRegion": "Tamil Nadu",
+        "postalCode": "600091",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "12.9698", 
+        "longitude": "80.2019" 
+      },
+      "servesCuisine": ["Arabian", "Indian", "Chinese", "Tandoor"],
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "opens": "11:30",
+          "closes": "23:00"
+        }
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.0",
+        "reviewCount": "2400"
+      }
+    }
+    </script>
 
     <script type="text/babel">
         const { useState, useEffect } = React;
@@ -173,7 +246,7 @@
             <section id="about" className="py-24 bg-white">
                 <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-16">
                     <div className="md:w-1/2 relative">
-                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Grilling Station" className="rounded-lg shadow-2xl z-10 relative w-full" />
+                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Grilling Station at Sea Emperor" className="rounded-lg shadow-2xl z-10 relative w-full" />
                         <div className="absolute -bottom-8 -right-8 w-64 h-64 border-4 border-brand rounded-full -z-0 opacity-20"></div>
                         <div className="absolute -top-8 -left-8 w-32 h-32 bg-brand rounded-full -z-0 opacity-10"></div>
                         <div className="absolute bottom-4 left-4 bg-white p-4 rounded shadow-lg max-w-xs">
@@ -228,9 +301,9 @@
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                             {dishes.map((dish, index) => (
-                                <div key={index} className="menu-card bg-white rounded-xl overflow-hidden border border-gray-100 flex flex-col group">
+                                <article key={index} className="menu-card bg-white rounded-xl overflow-hidden border border-gray-100 flex flex-col group">
                                     <div className="relative h-64 overflow-hidden">
-                                        <img src={dish.img} alt={dish.name} className="w-full h-full object-cover group-hover:scale-110 transition duration-700 ease-in-out" />
+                                        <img src={dish.img} alt={`${dish.name} at Sea Emperor Chennai`} className="w-full h-full object-cover group-hover:scale-110 transition duration-700 ease-in-out" />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
                                             <p className="text-white text-sm">View Details</p>
                                         </div>
@@ -251,7 +324,7 @@
                                             </button>
                                         </div>
                                     </div>
-                                </div>
+                                </article>
                             ))}
                         </div>
                     </div>
