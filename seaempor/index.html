@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sea Emperor Restaurant | Chennai</title>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#24AC9E', // Custom Teal
+                        dark: '#4D4D4F',  // Custom Dark Grey
+                        'brand-light': '#e6fcfa',
+                    },
+                    fontFamily: {
+                        sans: ['Lato', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, .brand-font {
+            font-family: 'Playfair Display', serif;
+        }
+        .hero-bg {
+            background-image: linear-gradient(rgba(77, 77, 79, 0.7), rgba(36, 172, 158, 0.4)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .menu-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px -5px rgba(36, 172, 158, 0.15), 0 8px 10px -6px rgba(36, 172, 158, 0.1);
+        }
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #24AC9E;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Data Components
+        const Navigation = () => (
+            <nav className="bg-white shadow-md fixed w-full z-50 top-0 border-b border-gray-100">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-between h-20">
+                        <div className="flex items-center">
+                            <div className="flex-shrink-0 flex items-center gap-3">
+                                <div className="bg-brand p-2 rounded-lg text-white">
+                                    <i className="fa-solid fa-utensils text-xl"></i>
+                                </div>
+                                <span className="brand-font text-2xl font-bold text-dark tracking-wide">Sea Emperor</span>
+                            </div>
+                        </div>
+                        <div className="hidden md:flex space-x-8 items-center">
+                            <a href="#home" className="nav-link text-dark hover:text-brand px-3 py-2 text-sm font-bold uppercase tracking-wide transition">Home</a>
+                            <a href="#about" className="nav-link text-dark hover:text-brand px-3 py-2 text-sm font-bold uppercase tracking-wide transition">About</a>
+                            <a href="#menu" className="nav-link text-dark hover:text-brand px-3 py-2 text-sm font-bold uppercase tracking-wide transition">Menu</a>
+                            <a href="#reviews" className="nav-link text-dark hover:text-brand px-3 py-2 text-sm font-bold uppercase tracking-wide transition">Reviews</a>
+                            <a href="#contact" className="bg-brand text-white px-6 py-2 rounded-sm text-sm font-bold hover:bg-opacity-90 transition shadow-lg transform hover:-translate-y-0.5">
+                                Order Now
+                            </a>
+                        </div>
+                        <div className="md:hidden flex items-center text-brand">
+                            <button className="focus:outline-none p-2">
+                                <i className="fas fa-bars text-2xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        );
+
+        const Hero = () => (
+            <header id="home" className="hero-bg h-screen flex items-center justify-center text-center px-4 relative">
+                <div className="max-w-4xl text-white relative z-10">
+                    <div className="inline-block border border-brand px-4 py-1 rounded-full mb-6 backdrop-blur-sm bg-white bg-opacity-10">
+                        <p className="text-brand-light text-sm font-bold tracking-[0.2em] uppercase">Est. 2010 • Madipakkam, Chennai</p>
+                    </div>
+                    <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight drop-shadow-lg">
+                        Authentic Flavors <br/> of <span className="text-brand">Arabia & India</span>
+                    </h1>
+                    <p className="text-xl md:text-2xl mb-10 text-gray-200 font-light max-w-2xl mx-auto">
+                        Experience the sizzling taste of Mandi, the richness of Biryani, and the freshness of Seafood.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="#menu" className="bg-brand hover:bg-teal-600 text-white font-bold py-4 px-10 rounded-sm transition shadow-lg border-2 border-brand">
+                            Explore Menu
+                        </a>
+                        <a href="#contact" className="bg-transparent hover:bg-white hover:text-dark text-white font-bold py-4 px-10 rounded-sm transition border-2 border-white">
+                            Book a Table
+                        </a>
+                    </div>
+                </div>
+                {/* Decorative bottom wave */}
+                <div className="absolute bottom-0 left-0 right-0">
+                    <svg viewBox="0 0 1440 320" className="w-full h-auto fill-gray-50">
+                        <path fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                    </svg>
+                </div>
+            </header>
+        );
+
+        const InfoStrip = () => {
+            const stats = [
+                { icon: 'fa-star', text: '3.7 Google Rating', sub: 'Based on 2000+ Reviews' },
+                { icon: 'fa-clock', text: 'Opens 11:30 AM', sub: 'Lunch & Dinner Service' },
+                { icon: 'fa-wallet', text: '₹1,000-1,200', sub: 'Average cost for two' },
+                { icon: 'fa-users', text: 'Party Hall', sub: 'Capacity: 100-120 Guests' },
+            ];
+
+            return (
+                <div className="bg-white -mt-16 relative z-20 mx-4 md:mx-auto max-w-6xl rounded-lg shadow-xl border border-gray-100 p-8">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-gray-100">
+                        {stats.map((stat, idx) => (
+                            <div key={idx} className="flex flex-col items-center group">
+                                <div className="bg-brand-light text-brand w-14 h-14 rounded-full flex items-center justify-center mb-3 group-hover:bg-brand group-hover:text-white transition duration-300">
+                                    <i className={`fas ${stat.icon} text-xl`}></i>
+                                </div>
+                                <h3 className="font-bold text-dark text-lg">{stat.text}</h3>
+                                <p className="text-sm text-gray-500 mt-1">{stat.sub}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const About = () => (
+            <section id="about" className="py-24 bg-white">
+                <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-16">
+                    <div className="md:w-1/2 relative">
+                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Grilling Station" className="rounded-lg shadow-2xl z-10 relative w-full" />
+                        <div className="absolute -bottom-8 -right-8 w-64 h-64 border-4 border-brand rounded-full -z-0 opacity-20"></div>
+                        <div className="absolute -top-8 -left-8 w-32 h-32 bg-brand rounded-full -z-0 opacity-10"></div>
+                        <div className="absolute bottom-4 left-4 bg-white p-4 rounded shadow-lg max-w-xs">
+                            <div className="flex items-center gap-3">
+                                <i className="fas fa-award text-3xl text-brand"></i>
+                                <div>
+                                    <p className="text-xs text-gray-500 uppercase font-bold">Serving Since</p>
+                                    <p className="text-xl font-bold text-dark">2010</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="md:w-1/2">
+                        <h4 className="text-brand font-bold tracking-widest uppercase mb-2">About Us</h4>
+                        <h2 className="text-4xl md:text-5xl font-bold text-dark mb-6 leading-tight">A Culinary Landmark in Madipakkam</h2>
+                        <p className="text-gray-600 mb-6 leading-relaxed text-lg">
+                            Located on Bazaar Main Rd, Ram Nagar South, Sea Emperor is a multi-cuisine paradise. We specialize in bringing the authentic taste of Arabian Mandi, the spicy kick of Indian Tandoor, and the subtle flavors of Chinese cuisine to your table.
+                        </p>
+                        <p className="text-gray-600 mb-8 leading-relaxed">
+                            Whether you're here for a quick bite of Chicken Shawarma or a family feast in our party hall, we promise an experience filled with flavor and tradition.
+                        </p>
+                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {['Live Counter Grills', 'Home Delivery Available', 'Kids Menu Available', 'Outdoor Catering Services'].map((item, i) => (
+                                <li key={i} className="flex items-center text-dark font-medium">
+                                    <i className="fas fa-check-circle text-brand mr-3 text-lg"></i>
+                                    {item}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Menu = () => {
+            const dishes = [
+                { name: "Kuzhi Mandi", desc: "New 2025 Special. Slow-cooked aromatic rice with tender meat, served in a traditional pit style.", price: "₹350+", img: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", tag: "Trending" },
+                { name: "Mandi Biryani", desc: "Authentic Yemeni style rice with a whole roasted chicken, rich in spices and aroma.", price: "₹400+", img: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", tag: "Bestseller" },
+                { name: "Tandoori BBQ", desc: "Sizzling grilled chicken marinated in our secret spices, cooked to perfection in a clay oven.", price: "₹240", img: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", tag: "Grill" },
+                { name: "Chicken Shawarma", desc: "Juicy chicken wrapped in warm bread with garlic sauce and fresh veggies.", price: "₹90", img: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", tag: "Snack" },
+                { name: "Fish Fingers", desc: "Crispy fried fish fingers served with tartar sauce, perfect for seafood lovers.", price: "₹180", img: "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", tag: "Seafood" },
+                { name: "Paneer Butter Masala", desc: "Rich creamy tomato gravy with soft paneer cubes. A vegetarian delight.", price: "₹190", img: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", tag: "Veg" },
+            ];
+
+            return (
+                <section id="menu" className="py-24 bg-gray-50">
+                    <div className="max-w-7xl mx-auto px-4">
+                        <div className="text-center mb-16">
+                            <span className="text-brand font-bold tracking-widest uppercase">Our Specialties</span>
+                            <h2 className="text-4xl font-bold text-dark mt-2 mb-4">Curated Menu</h2>
+                            <div className="w-24 h-1 bg-brand mx-auto rounded"></div>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {dishes.map((dish, index) => (
+                                <div key={index} className="menu-card bg-white rounded-xl overflow-hidden border border-gray-100 flex flex-col group">
+                                    <div className="relative h-64 overflow-hidden">
+                                        <img src={dish.img} alt={dish.name} className="w-full h-full object-cover group-hover:scale-110 transition duration-700 ease-in-out" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                                            <p className="text-white text-sm">View Details</p>
+                                        </div>
+                                        <span className="absolute top-4 right-4 bg-brand text-white text-xs font-bold px-3 py-1 rounded-sm uppercase tracking-wide shadow-md">
+                                            {dish.tag}
+                                        </span>
+                                    </div>
+                                    <div className="p-6 flex flex-col flex-grow bg-white relative">
+                                        <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-lg border border-gray-100">
+                                            <i className="fas fa-utensils text-gray-300"></i>
+                                        </div>
+                                        <h3 className="text-xl font-bold text-dark mb-2">{dish.name}</h3>
+                                        <p className="text-gray-500 text-sm mb-4 flex-grow leading-relaxed">{dish.desc}</p>
+                                        <div className="flex justify-between items-center mt-auto pt-4 border-t border-gray-100">
+                                            <span className="text-lg font-bold text-brand">{dish.price}</span>
+                                            <button className="text-dark hover:text-brand transition font-bold text-sm flex items-center gap-2 group-hover:gap-3 transition-all">
+                                                Order Now <i className="fas fa-arrow-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Reviews = () => {
+            const platforms = [
+                { name: "Google", rating: 3.7, reviews: "2000+", color: "bg-red-500" },
+                { name: "Zomato", rating: 3.8, reviews: "393", color: "bg-red-600" },
+                { name: "Justdial", rating: 4.0, reviews: "N/A", color: "bg-blue-500" },
+                { name: "Facebook", rating: 4.8, reviews: "N/A", color: "bg-blue-700" },
+            ];
+
+            return (
+                <section id="reviews" className="py-24 bg-white">
+                    <div className="max-w-7xl mx-auto px-4">
+                        <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+                            <div>
+                                <h2 className="text-4xl font-bold text-dark mb-4">Customer Feedback</h2>
+                                <div className="w-24 h-1 bg-brand mb-4"></div>
+                                <p className="text-gray-600 max-w-md">Real reviews from food lovers in Chennai. We value every word of feedback to serve you better.</p>
+                            </div>
+                            <div className="hidden md:block text-right mt-4 md:mt-0">
+                                <div className="text-5xl font-bold text-brand">4.0</div>
+                                <div className="text-gray-500 text-sm">Average Rating</div>
+                            </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                            {/* Ratings Grid */}
+                            <div className="bg-gray-50 p-8 rounded-2xl border border-gray-100">
+                                <h3 className="text-xl font-bold mb-8 text-dark">Platform Ratings</h3>
+                                <div className="space-y-6">
+                                    {platforms.map((platform, idx) => (
+                                        <div key={idx}>
+                                            <div className="flex justify-between mb-2">
+                                                <span className="font-bold text-dark">{platform.name}</span>
+                                                <span className="font-bold text-brand">{platform.rating}</span>
+                                            </div>
+                                            <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                                                <div className={`${platform.color} h-2.5 rounded-full`} style={{ width: `${(platform.rating / 5) * 100}%` }}></div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Text Reviews Summary */}
+                            <div className="space-y-6">
+                                <div className="bg-teal-50 p-8 rounded-2xl border-l-4 border-brand">
+                                    <h4 className="font-bold text-brand mb-3 flex items-center gap-2"><i className="fas fa-smile-beam"></i> What They Love</h4>
+                                    <p className="text-gray-700 italic text-lg">"The fried chicken is addictive, and the Mandi Biryani is absolutely authentic. Great value for the all-you-can-eat option!"</p>
+                                </div>
+                                <div className="bg-gray-100 p-8 rounded-2xl border-l-4 border-dark">
+                                    <h4 className="font-bold text-dark mb-3 flex items-center gap-2"><i className="fas fa-comment-dots"></i> Areas for Improvement</h4>
+                                    <p className="text-gray-600 italic">"Service can be a bit slow during the weekend rush. Restroom cleanliness could be improved."</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Contact = () => {
+            return (
+                <section id="contact" className="py-24 bg-dark text-white">
+                    <div className="max-w-7xl mx-auto px-4">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                            {/* Contact Info */}
+                            <div>
+                                <h2 className="text-4xl font-bold mb-2 text-brand">Get in Touch</h2>
+                                <p className="text-gray-400 mb-10 text-lg">We look forward to serving you at our Madipakkam location.</p>
+                                
+                                <div className="space-y-8">
+                                    <div className="flex items-start group">
+                                        <div className="bg-brand bg-opacity-20 p-4 rounded-lg mr-5 group-hover:bg-brand transition duration-300">
+                                            <i className="fas fa-map-marker-alt text-2xl text-brand group-hover:text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-xl font-bold mb-2 text-white">Address</h4>
+                                            <p className="text-gray-400 leading-relaxed">
+                                                Plot no. 11, 12, Bazaar Main Rd,<br/>
+                                                Ram Nagar Police check post, Ram Nagar South,<br/>
+                                                Madipakkam, Chennai, Tamil Nadu 600091.
+                                            </p>
+                                            <p className="text-sm text-brand mt-2 font-medium"><i className="fas fa-location-arrow mr-1"></i> Opposite OMS Maruthi Service Station</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center group">
+                                        <div className="bg-brand bg-opacity-20 p-4 rounded-lg mr-5 group-hover:bg-brand transition duration-300">
+                                            <i className="fas fa-phone-alt text-2xl text-brand group-hover:text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-xl font-bold mb-2 text-white">Reservations</h4>
+                                            <a href="tel:08939716362" className="text-2xl text-white hover:text-brand transition font-bold tracking-wide">089397 16362</a>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center group">
+                                        <div className="bg-brand bg-opacity-20 p-4 rounded-lg mr-5 group-hover:bg-brand transition duration-300">
+                                            <i className="fas fa-clock text-2xl text-brand group-hover:text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-xl font-bold mb-2 text-white">Opening Hours</h4>
+                                            <p className="text-gray-300 text-lg">Daily: 11:30 AM - 11:00 PM</p>
+                                            <span className="inline-block mt-2 px-3 py-1 bg-green-500 bg-opacity-20 text-green-400 text-xs font-bold rounded-full uppercase tracking-wide">
+                                                Open Now
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Map Area */}
+                            <div className="rounded-2xl overflow-hidden h-96 lg:h-auto bg-gray-800 relative shadow-2xl border border-gray-700">
+                                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Restaurant Ambiance" className="w-full h-full object-cover opacity-60" />
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <button className="bg-white text-dark px-8 py-3 rounded-sm font-bold hover:bg-brand hover:text-white transition shadow-lg flex items-center gap-3">
+                                        <i className="fas fa-map-marked-alt text-brand"></i>
+                                        Get Directions
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Footer = () => (
+            <footer className="bg-black text-white py-10 border-t border-gray-800">
+                <div className="max-w-7xl mx-auto px-4 text-center">
+                    <div className="flex justify-center items-center gap-3 mb-6">
+                        <div className="bg-brand p-2 rounded text-white">
+                            <i className="fas fa-utensils"></i>
+                        </div>
+                        <span className="brand-font text-2xl font-bold tracking-wide">Sea Emperor</span>
+                    </div>
+                    <p className="text-gray-500 text-sm mb-8 max-w-md mx-auto">
+                        Multi-cuisine restaurant specializing in Arabian, Indian, Chinese, Tandoor, and grilled items.
+                    </p>
+                    <div className="flex justify-center gap-6 mb-8">
+                        <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand hover:text-white transition text-gray-400">
+                            <i className="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand hover:text-white transition text-gray-400">
+                            <i className="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand hover:text-white transition text-gray-400">
+                            <i className="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                    <div className="text-xs text-gray-600">
+                        &copy; 2025 Sea Emperor Restaurant. All rights reserved. | Chennai, Tamil Nadu.
+                    </div>
+                </div>
+            </footer>
+        );
+
+        const App = () => {
+            return (
+                <div className="min-h-screen flex flex-col">
+                    <Navigation />
+                    <main className="flex-grow">
+                        <Hero />
+                        <div className="px-4 md:px-0">
+                            <InfoStrip />
+                        </div>
+                        <About />
+                        <Menu />
+                        <Reviews />
+                        <Contact />
+                    </main>
+                    <Footer />
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
