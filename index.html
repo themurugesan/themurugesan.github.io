@@ -1,30 +1,34 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Muthu Murugesan | Full Stack Developer</title>
-    
+
     <!-- Meta Tags for SEO -->
-    <meta name="description" content="Portfolio of Muthu Murugesan, a MERN Stack Developer specializing in e-commerce and fintech solutions.">
+    <meta name="description"
+        content="Portfolio of Muthu Murugesan, a MERN Stack Developer specializing in e-commerce and fintech solutions.">
     <meta name="keywords" content="Muthu Murugesan, MERN Stack, React, Node.js, Portfolio, Web Developer">
-    
+
     <!-- React & ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    
+
     <!-- Babel for JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
+
     <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -83,10 +87,22 @@
         }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #1a1a1a; }
-        ::-webkit-scrollbar-thumb { background: #59316B; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #7B4397; }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #59316B;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7B4397;
+        }
 
         /* Glassmorphism Utilities */
         .glass-nav {
@@ -94,6 +110,7 @@
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         .light .glass-nav {
             background: rgba(255, 255, 255, 0.8);
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
@@ -104,6 +121,7 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         .light .glass-card {
             background: rgba(255, 255, 255, 0.7);
             border: 1px solid rgba(0, 0, 0, 0.05);
@@ -116,7 +134,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
+
         /* Utility for 3D canvas */
         #canvas-container {
             position: fixed;
@@ -125,10 +143,12 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            pointer-events: none; /* Let clicks pass through */
+            pointer-events: none;
+            /* Let clicks pass through */
         }
     </style>
 </head>
+
 <body class="bg-dark-bg text-dark-text dark">
     <div id="root"></div>
 
@@ -141,7 +161,7 @@
             role: "Full Stack Developer | MERN",
             location: "Chennai, Tamil Nadu, India",
             status: "Open to Work",
-            bio: "Recent Computer Science graduate with expertise in web development and a passion for creating innovative solutions. Specializing in the MERN stack with a focus on e-commerce and inventory management systems.",
+            bio: "Recent Computer Science graduate with expertise in web development and a passion for creating innovative solutions. Specializing in the MERN stack with a focus on fintech.",
             stats: [
                 { label: "LinkedIn Followers", value: "1,269+" },
                 { label: "Connections", value: "500+" },
@@ -155,8 +175,10 @@
                 { name: "MongoDB", level: 82 },
                 { name: "Express.js", level: 88 },
                 { name: "Python", level: 85 },
-                { name: "TypeScript", level: 75 },
-                { name: "HTML5/CSS3", level: 95 }
+                { name: "C & C++", level: 75 },
+                { name: "HTML5/CSS3", level: 95 },
+                { name: "Tailwind CSS", level: 84 },
+                { name: "Material Ui", level: 76 }
             ],
             experience: [
                 {
@@ -179,6 +201,13 @@
                     period: "Jun 2023 - Dec 2023",
                     type: "Internship",
                     desc: "Completed certification in Cybersecurity Essentials, focusing on ethical hacking and network protection."
+                },
+                {
+                    role: "CCNA",
+                    company: "Cisco",
+                    period: "Jun 2023 - Dec 2023",
+                    type: "Internship",
+                    desc: "Completed certification in Computer Networking"
                 }
             ],
             projects: [
@@ -251,7 +280,7 @@
 
                 // Material color based on theme
                 const particleColor = darkMode ? 0x9D4EDD : 0x59316B;
-                
+
                 const material = new THREE.PointsMaterial({
                     color: particleColor,
                     size: 0.7,
@@ -294,7 +323,7 @@
                     // Update particles
                     for (let i = 0; i < particleCount; i++) {
                         const i3 = i * 3;
-                        
+
                         positions[i3] += velocities[i].x;
                         positions[i3 + 1] += velocities[i].y;
                         positions[i3 + 2] += velocities[i].z;
@@ -306,19 +335,19 @@
 
                         // Mouse interaction (slight attraction/repulsion)
                         // Simplified for performance
-                        
+
                         // Check connections
                         for (let j = i + 1; j < particleCount; j++) {
                             const j3 = j * 3;
                             const dx = positions[i3] - positions[j3];
-                            const dy = positions[i3+1] - positions[j3+1];
-                            const dz = positions[i3+2] - positions[j3+2];
-                            const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+                            const dy = positions[i3 + 1] - positions[j3 + 1];
+                            const dz = positions[i3 + 2] - positions[j3 + 2];
+                            const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
                             if (dist < 15) {
                                 linePositions.push(
-                                    positions[i3], positions[i3+1], positions[i3+2],
-                                    positions[j3], positions[j3+1], positions[j3+2]
+                                    positions[i3], positions[i3 + 1], positions[i3 + 2],
+                                    positions[j3], positions[j3 + 1], positions[j3 + 2]
                                 );
                             }
                         }
@@ -326,7 +355,7 @@
 
                     particles.geometry.attributes.position.needsUpdate = true;
                     lines.geometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
-                    
+
                     // Gentle rotation
                     particles.rotation.y += 0.001;
                     lines.rotation.y += 0.001;
@@ -367,6 +396,7 @@
             }, []);
 
             const navLinks = ['Home', 'About', 'Skills', 'Experience', 'Projects', 'Contact'];
+            
 
             return (
                 <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'glass-nav py-4' : 'bg-transparent py-6'}`}>
@@ -382,7 +412,7 @@
                                     {link}
                                 </a>
                             ))}
-                            <button 
+                            <button
                                 onClick={toggleTheme}
                                 className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
                                 aria-label="Toggle Theme"
@@ -417,6 +447,12 @@
         };
 
         const Hero = () => {
+            const socialLinks = {
+                github: "https://github.com/themurugesan",
+                linkedin: "https://www.linkedin.com/in/themurugesan",
+                instagram: "https://www.instagram.com/musan.co",
+                whatsapp:"https://wa.me/6385823340"
+            };
             return (
                 <section id="home" className="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
                     <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -428,26 +464,32 @@
                             <h1 className="text-5xl md:text-7xl font-bold mb-4 leading-tight">
                                 Hi, I'm <span className="text-gradient">{profileData.name}</span>
                             </h1>
-                            <h2 className="text-2xl md:text-3xl font-light text-gray-500 dark:text-gray-400 mb-8">
+                            <h2 className="text-2xl md:text-3xl font-light text-gray-500 dark:text-gray-500 mb-8">
                                 {profileData.role}
                             </h2>
-                            <p className="text-lg text-gray-600 dark:text-gray-300 mb-10 max-w-lg leading-relaxed">
+                            <p className="text-lg text-gray-600 dark:text-gray-500 mb-10 max-w-lg leading-relaxed">
                                 {profileData.bio}
                             </p>
-                            
+
                             <div className="flex flex-wrap gap-4">
                                 <a href="#contact" className="px-8 py-4 bg-brand hover:bg-brand-light text-white font-bold rounded-lg transition-all shadow-[0_0_20px_rgba(89,49,107,0.4)] hover:shadow-[0_0_30px_rgba(89,49,107,0.6)]">
                                     Get In Touch
                                 </a>
-                                <button onClick={() => alert("Resume download started (Demo)")} className="px-8 py-4 border border-brand text-brand dark:text-white hover:bg-brand hover:text-white font-bold rounded-lg transition-all flex items-center gap-2">
+                                <button onClick={() => alert("Resume download started (Demo)")} className="px-8 py-4 border  bg-brand border-brand text-brand dark:text-white hover:bg-brand hover:text-white font-bold rounded-lg transition-all flex items-center gap-2">
                                     <i className="fas fa-download"></i> Download CV
                                 </button>
                             </div>
 
                             <div className="mt-12 flex gap-6">
-                                {['github', 'linkedin', 'twitter', 'instagram'].map(social => (
-                                    <a key={social} href="#" className="text-2xl text-gray-400 hover:text-brand transition-colors transform hover:scale-110">
-                                        <i className={`fab fa-${social}`}></i>
+                                {Object.keys(socialLinks).map((key) => (
+                                    <a
+                                        key={key}
+                                        href={socialLinks[key]}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-2xl text-gray-500 hover:text-brand transition-colors transform hover:scale-110"
+                                    >
+                                        <i className={`fab fa-${key}`}></i>
                                     </a>
                                 ))}
                             </div>
@@ -458,9 +500,9 @@
                             <div className="relative w-64 h-64 md:w-80 md:h-80">
                                 <div className="absolute inset-0 bg-brand rounded-full blur-2xl opacity-20 animate-pulse"></div>
                                 <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-brand/30 p-2">
-                                    <img 
-                                        src="https://api.dicebear.com/7.x/avataaars/svg?seed=Muthu&backgroundColor=b6e3f4" 
-                                        alt="Muthu Murugesan" 
+                                    <img
+                                        src="https://media.licdn.com/dms/image/v2/D5603AQEoKqOxzabHjg/profile-displayphoto-scale_200_200/B56ZrAQHNvHkAY-/0/1764162042272?e=1772064000&v=beta&t=3ibvQYy4P2hebbQPAaGcdG5x5rjDsOqfPo0QxSTDEuo"
+                                        alt="Muthu Murugesan"
                                         className="w-full h-full object-cover rounded-full bg-gray-200"
                                     />
                                 </div>
@@ -468,7 +510,7 @@
                                 <div className="absolute -top-4 -right-4 p-3 bg-white dark:bg-dark-card rounded-lg shadow-xl animate-bounce">
                                     <i className="fab fa-react text-3xl text-blue-400"></i>
                                 </div>
-                                <div className="absolute -bottom-4 -left-4 p-3 bg-white dark:bg-dark-card rounded-lg shadow-xl animate-bounce" style={{animationDelay: '1s'}}>
+                                <div className="absolute -bottom-4 -left-4 p-3 bg-white dark:bg-dark-card rounded-lg shadow-xl animate-bounce" style={{ animationDelay: '1s' }}>
                                     <i className="fab fa-node-js text-3xl text-green-500"></i>
                                 </div>
                             </div>
@@ -492,21 +534,21 @@
                                 <span className="w-12 h-1 bg-brand"></span>
                                 About Me
                             </h2>
-                            
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                                 <div>
-                                    <p className="text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-                                        {profileData.bio} I honed my skills through practical learning and successfully executed full-stack web development projects, with a particular focus on inventory management systems.
+                                    <p className="text-lg text-gray-600 dark:text-gray-500 mb-6 leading-relaxed">
+                                        {profileData.bio} I honed my skills through practical learning and successfully executed full-stack web development projects, with a particular focus on fintech.
                                     </p>
-                                    <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-                                        I'm actively seeking new opportunities to contribute my knowledge and passion in a dynamic work environment. With certifications in Cybersecurity and Big Data, I bring a well-rounded technical perspective.
+                                    <p className="text-lg text-gray-600 dark:text-gray-500 mb-8 leading-relaxed">
+                                        I'm actively seeking new opportunities to contribute my knowledge and passion in a dynamic work environment. With certifications in Cybersecurity and Computer Networking, I bring a well-rounded technical perspective.
                                     </p>
-                                    
+
                                     <div className="flex flex-wrap gap-4">
-                                        <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full text-sm font-medium border border-white/10">
+                                        <div className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full text-sm font-medium border border-white/10">
                                             <i className="fas fa-map-marker-alt text-brand"></i> {profileData.location}
                                         </div>
-                                        <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full text-sm font-medium border border-white/10">
+                                        <div className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full text-sm font-medium border border-white/10">
                                             <i className="fas fa-graduation-cap text-brand"></i> BE Computer Science
                                         </div>
                                     </div>
@@ -516,7 +558,7 @@
                                     {profileData.stats.map((stat, i) => (
                                         <div key={i} className="p-6 bg-brand/5 rounded-xl border border-brand/10 hover:border-brand/30 transition-colors text-center">
                                             <h3 className="text-3xl font-bold text-brand mb-1">{stat.value}</h3>
-                                            <p className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider">{stat.label}</p>
+                                            <p className="text-sm text-gray-500 dark:text-gray-500 uppercase tracking-wider">{stat.label}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -532,16 +574,16 @@
                 <section id="skills" className="py-20 bg-white/5 dark:bg-black/20">
                     <div className="max-w-7xl mx-auto px-6">
                         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Technical <span className="text-gradient">Proficiency</span></h2>
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8">
                             {profileData.skills.map((skill, i) => (
                                 <div key={i} className="group">
                                     <div className="flex justify-between mb-2">
-                                        <span className="font-medium text-gray-700 dark:text-gray-300">{skill.name}</span>
+                                        <span className="font-medium text-gray-700 dark:text-gray-500">{skill.name}</span>
                                         <span className="text-brand font-mono">{skill.level}%</span>
                                     </div>
                                     <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                                        <div 
+                                        <div
                                             className="h-full bg-gradient-to-r from-brand to-brand-accent rounded-full transition-all duration-1000 ease-out group-hover:opacity-80"
                                             style={{ width: `${skill.level}%` }}
                                         ></div>
@@ -559,24 +601,24 @@
                 <section id="experience" className="py-20">
                     <div className="max-w-4xl mx-auto px-6">
                         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Professional <span className="text-gradient">Journey</span></h2>
-                        
+
                         <div className="relative border-l-2 border-brand/30 ml-3 md:ml-6 space-y-12">
                             {profileData.experience.map((exp, i) => (
                                 <div key={i} className="relative pl-8 md:pl-12 group">
                                     {/* Dot */}
                                     <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-brand border-4 border-gray-900 group-hover:scale-125 transition-transform"></div>
-                                    
+
                                     <div className="glass-card p-6 rounded-xl hover:border-brand/50 transition-colors">
                                         <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
                                             <div>
-                                                <h3 className="text-xl font-bold text-white dark:text-gray-100">{exp.role}</h3>
+                                                <h3 className="text-xl font-bold text-white dark:text-gray-500">{exp.role}</h3>
                                                 <p className="text-brand font-medium">{exp.company}</p>
                                             </div>
-                                            <span className="inline-block mt-2 md:mt-0 px-3 py-1 bg-white/10 rounded text-xs font-mono uppercase tracking-wide text-gray-400">
+                                            <span className="inline-block mt-2 md:mt-0 px-3 py-1 bg-white/10 rounded text-xs font-mono uppercase tracking-wide text-gray-500">
                                                 {exp.period}
                                             </span>
                                         </div>
-                                        <p className="text-gray-400 text-sm leading-relaxed">
+                                        <p className="text-gray-500 text-sm leading-relaxed">
                                             {exp.desc}
                                         </p>
                                         <div className="mt-4 flex gap-2">
@@ -598,7 +640,7 @@
                 <section id="projects" className="py-20 bg-white/5 dark:bg-black/20">
                     <div className="max-w-7xl mx-auto px-6">
                         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Featured <span className="text-gradient">Projects</span></h2>
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {profileData.projects.map((project, i) => (
                                 <div key={i} className="glass-card rounded-xl overflow-hidden group hover:-translate-y-2 transition-transform duration-300">
@@ -611,8 +653,8 @@
                                     </div>
                                     <div className="p-6">
                                         <h3 className="text-xl font-bold mb-2 group-hover:text-brand transition-colors">{project.title}</h3>
-                                        <p className="text-gray-400 text-sm mb-4 h-10 overflow-hidden text-ellipsis">{project.desc}</p>
-                                        
+                                        <p className="text-gray-500 text-sm mb-4 h-10 overflow-hidden text-ellipsis">{project.desc}</p>
+
                                         <div className="flex flex-wrap gap-2 mb-6">
                                             {project.tech.map((t, idx) => (
                                                 <span key={idx} className="text-[10px] font-mono bg-brand/10 text-brand px-2 py-1 rounded">{t}</span>
@@ -654,42 +696,42 @@
                     <div className="max-w-4xl mx-auto px-6 relative z-10">
                         <div className="text-center mb-12">
                             <h2 className="text-3xl md:text-4xl font-bold mb-4">Let's <span className="text-gradient">Connect</span></h2>
-                            <p className="text-gray-400">Have a project in mind or want to chat about tech?</p>
+                            <p className="text-gray-500">Have a project in mind or want to chat about tech?</p>
                         </div>
 
                         <div className="glass-card p-8 md:p-12 rounded-2xl">
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
-                                        <label className="text-sm font-medium text-gray-400">Name</label>
-                                        <input 
+                                        <label className="text-sm font-medium text-gray-500">Name</label>
+                                        <input
                                             required
-                                            type="text" 
+                                            type="text"
                                             value={formState.name}
-                                            onChange={e => setFormState({...formState, name: e.target.value})}
+                                            onChange={e => setFormState({ ...formState, name: e.target.value })}
                                             className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all text-white"
                                             placeholder="John Doe"
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-sm font-medium text-gray-400">Email</label>
-                                        <input 
+                                        <label className="text-sm font-medium text-gray-500">Email</label>
+                                        <input
                                             required
-                                            type="email" 
+                                            type="email"
                                             value={formState.email}
-                                            onChange={e => setFormState({...formState, email: e.target.value})}
+                                            onChange={e => setFormState({ ...formState, email: e.target.value })}
                                             className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all text-white"
                                             placeholder="john@example.com"
                                         />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium text-gray-400">Message</label>
-                                    <textarea 
+                                    <label className="text-sm font-medium text-gray-500">Message</label>
+                                    <textarea
                                         required
                                         rows="4"
                                         value={formState.message}
-                                        onChange={e => setFormState({...formState, message: e.target.value})}
+                                        onChange={e => setFormState({ ...formState, message: e.target.value })}
                                         className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all text-white"
                                         placeholder="Tell me about your project..."
                                     ></textarea>
@@ -706,7 +748,7 @@
                                     </div>
                                     <div>
                                         <p className="text-xs text-gray-500">Email me at</p>
-                                        <a href="mailto:kvpmuhtu7@gmail.com" className="text-sm font-medium hover:text-brand">kvpmuhtu7@gmail.com</a>
+                                        <a href="mailto:kvpmuhtu7@gmail.com" className="text-sm font-medium hover:text-brand">themurugesan@gmail.com</a>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-4">
@@ -727,7 +769,7 @@
 
         const Footer = () => (
             <footer className="py-8 bg-black text-center text-gray-600 text-sm">
-                <p>&copy; 2026 Muthu Murugesan. Made with <i className="fas fa-heart text-red-500"></i> using React & Three.js</p>
+                <p>&copy; 2026 Musan. Made with <i className="fas fa-heart text-red-500"></i></p>
             </footer>
         );
 
@@ -774,4 +816,5 @@
         root.render(<App />);
     </script>
 </body>
+
 </html>
