@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muthu Murugesan | Full Stack Developer</title>
+    
+    <!-- Meta Tags for SEO -->
+    <meta name="description" content="Portfolio of Muthu Murugesan, a MERN Stack Developer specializing in e-commerce and fintech solutions.">
+    <meta name="keywords" content="Muthu Murugesan, MERN Stack, React, Node.js, Portfolio, Web Developer">
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Enables manual toggling
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#59316B', // The requested purple
+                            light: '#7B4397',
+                            dark: '#3D1F47',
+                            accent: '#9D4EDD'
+                        },
+                        dark: {
+                            bg: '#0f0f0f',
+                            card: '#1a1a1a',
+                            text: '#e5e5e5'
+                        },
+                        light: {
+                            bg: '#f8f9fa',
+                            card: '#ffffff',
+                            text: '#1a1a1a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #59316B; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #7B4397; }
+
+        /* Glassmorphism Utilities */
+        .glass-nav {
+            background: rgba(15, 15, 15, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .light .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .light .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Text Gradient */
+        .text-gradient {
+            background: linear-gradient(135deg, #59316B 0%, #9D4EDD 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Utility for 3D canvas */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none; /* Let clicks pass through */
+        }
+    </style>
+</head>
+<body class="bg-dark-bg text-dark-text dark">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- Data ---
+        const profileData = {
+            name: "Muthu Murugesan",
+            role: "Full Stack Developer | MERN",
+            location: "Chennai, Tamil Nadu, India",
+            status: "Open to Work",
+            bio: "Recent Computer Science graduate with expertise in web development and a passion for creating innovative solutions. Specializing in the MERN stack with a focus on e-commerce and inventory management systems.",
+            stats: [
+                { label: "LinkedIn Followers", value: "1,269+" },
+                { label: "Connections", value: "500+" },
+                { label: "Projects", value: "10+" },
+                { label: "Experience", value: "1+ Year" }
+            ],
+            skills: [
+                { name: "React.js", level: 85 },
+                { name: "JavaScript (ES6+)", level: 90 },
+                { name: "Node.js", level: 85 },
+                { name: "MongoDB", level: 82 },
+                { name: "Express.js", level: 88 },
+                { name: "Python", level: 85 },
+                { name: "TypeScript", level: 75 },
+                { name: "HTML5/CSS3", level: 95 }
+            ],
+            experience: [
+                {
+                    role: "Full Stack Developer",
+                    company: "ZustPe Technologies",
+                    period: "Oct 2024 - Present",
+                    type: "Full-time",
+                    desc: "Working on innovative fintech solutions, NPCI integrations, and scalable web applications using the MERN stack."
+                },
+                {
+                    role: "Full-stack Web Developer",
+                    company: "Freelance",
+                    period: "Jan 2024 - Oct 2024",
+                    type: "Freelance",
+                    desc: "Delivered custom e-commerce platforms and inventory management systems with modern UI/UX practices."
+                },
+                {
+                    role: "Cybersecurity Intern",
+                    company: "Cisco",
+                    period: "Jun 2023 - Dec 2023",
+                    type: "Internship",
+                    desc: "Completed certification in Cybersecurity Essentials, focusing on ethical hacking and network protection."
+                }
+            ],
+            projects: [
+                {
+                    title: "FinTech Payment Platform",
+                    category: "Enterprise • Live",
+                    desc: "Comprehensive payment processing with real-time monitoring, fraud detection, and PCI DSS compliance.",
+                    tech: ["React", "Node.js", "MongoDB", "Stripe API"],
+                    metrics: "10M+ Transactions"
+                },
+                {
+                    title: "Crypto Trading Dashboard",
+                    category: "Personal • In Dev",
+                    desc: "Real-time cryptocurrency dashboard with advanced charting, portfolio analytics, and trading bot integration.",
+                    tech: ["React", "TypeScript", "WebSocket", "Chart.js"],
+                    metrics: "99.8% Accuracy"
+                },
+                {
+                    title: "Banking Mobile App",
+                    category: "Freelance • Published",
+                    desc: "Mobile banking app featuring biometric auth, instant transfers, and expense categorization.",
+                    tech: ["React Native", "Node.js", "PostgreSQL", "Redis"],
+                    metrics: "25K+ Downloads"
+                },
+                {
+                    title: "E-commerce Analytics",
+                    category: "Enterprise • Live",
+                    desc: "Platform providing real-time insights, customer segmentation, and inventory optimization for retailers.",
+                    tech: ["React", "Express", "D3.js", "AWS Lambda"],
+                    metrics: "50TB+ Data Processed"
+                }
+            ]
+        };
+
+        // --- Three.js Background Component ---
+        const ParticleNetwork = ({ darkMode }) => {
+            const mountRef = useRef(null);
+
+            useEffect(() => {
+                const mount = mountRef.current;
+                const scene = new THREE.Scene();
+                // Fog color changes based on theme
+                const fogColor = darkMode ? 0x0f0f0f : 0xf8f9fa;
+                scene.fog = new THREE.FogExp2(fogColor, 0.002);
+
+                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                camera.position.z = 50;
+
+                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                mount.appendChild(renderer.domElement);
+
+                // Particles
+                const particleCount = 100;
+                const geometry = new THREE.BufferGeometry();
+                const positions = new Float32Array(particleCount * 3);
+                const velocities = [];
+
+                for (let i = 0; i < particleCount * 3; i++) {
+                    positions[i] = (Math.random() - 0.5) * 150;
+                    if (i % 3 === 0) velocities.push({
+                        x: (Math.random() - 0.5) * 0.05,
+                        y: (Math.random() - 0.5) * 0.05,
+                        z: (Math.random() - 0.5) * 0.05
+                    });
+                }
+
+                geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+                // Material color based on theme
+                const particleColor = darkMode ? 0x9D4EDD : 0x59316B;
+                
+                const material = new THREE.PointsMaterial({
+                    color: particleColor,
+                    size: 0.7,
+                    transparent: true,
+                    opacity: 0.8
+                });
+
+                const particles = new THREE.Points(geometry, material);
+                scene.add(particles);
+
+                // Lines geometry
+                const lineMaterial = new THREE.LineBasicMaterial({
+                    color: particleColor,
+                    transparent: true,
+                    opacity: 0.15
+                });
+
+                const linesGeometry = new THREE.BufferGeometry();
+                const lines = new THREE.LineSegments(linesGeometry, lineMaterial);
+                scene.add(lines);
+
+                // Interaction
+                let mouseX = 0;
+                let mouseY = 0;
+
+                const handleMouseMove = (event) => {
+                    mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+                    mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+                };
+
+                document.addEventListener('mousemove', handleMouseMove);
+
+                // Animation Loop
+                const animate = () => {
+                    requestAnimationFrame(animate);
+
+                    const positions = particles.geometry.attributes.position.array;
+                    const linePositions = [];
+
+                    // Update particles
+                    for (let i = 0; i < particleCount; i++) {
+                        const i3 = i * 3;
+                        
+                        positions[i3] += velocities[i].x;
+                        positions[i3 + 1] += velocities[i].y;
+                        positions[i3 + 2] += velocities[i].z;
+
+                        // Boundary check
+                        if (Math.abs(positions[i3]) > 75) velocities[i].x *= -1;
+                        if (Math.abs(positions[i3 + 1]) > 75) velocities[i].y *= -1;
+                        if (Math.abs(positions[i3 + 2]) > 75) velocities[i].z *= -1;
+
+                        // Mouse interaction (slight attraction/repulsion)
+                        // Simplified for performance
+                        
+                        // Check connections
+                        for (let j = i + 1; j < particleCount; j++) {
+                            const j3 = j * 3;
+                            const dx = positions[i3] - positions[j3];
+                            const dy = positions[i3+1] - positions[j3+1];
+                            const dz = positions[i3+2] - positions[j3+2];
+                            const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+
+                            if (dist < 15) {
+                                linePositions.push(
+                                    positions[i3], positions[i3+1], positions[i3+2],
+                                    positions[j3], positions[j3+1], positions[j3+2]
+                                );
+                            }
+                        }
+                    }
+
+                    particles.geometry.attributes.position.needsUpdate = true;
+                    lines.geometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+                    
+                    // Gentle rotation
+                    particles.rotation.y += 0.001;
+                    lines.rotation.y += 0.001;
+
+                    renderer.render(scene, camera);
+                };
+
+                animate();
+
+                // Resize & Theme Change Handling
+                const handleResize = () => {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                };
+                window.addEventListener('resize', handleResize);
+
+                return () => {
+                    window.removeEventListener('resize', handleResize);
+                    document.removeEventListener('mousemove', handleMouseMove);
+                    mount.removeChild(renderer.domElement);
+                };
+            }, [darkMode]); // Re-init on theme change to update colors
+
+            return <div ref={mountRef} id="canvas-container" />;
+        };
+
+        // --- UI Components ---
+
+        const Navbar = ({ darkMode, toggleTheme }) => {
+            const [scrolled, setScrolled] = useState(false);
+            const [menuOpen, setMenuOpen] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => setScrolled(window.scrollY > 50);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const navLinks = ['Home', 'About', 'Skills', 'Experience', 'Projects', 'Contact'];
+
+            return (
+                <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'glass-nav py-4' : 'bg-transparent py-6'}`}>
+                    <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+                        <div className="text-2xl font-bold font-mono tracking-tighter text-brand">
+                            &lt;Muthu.dev /&gt;
+                        </div>
+
+                        {/* Desktop Menu */}
+                        <div className="hidden md:flex items-center gap-8">
+                            {navLinks.map((link) => (
+                                <a key={link} href={`#${link.toLowerCase()}`} className="text-sm font-medium uppercase tracking-wide hover:text-brand transition-colors">
+                                    {link}
+                                </a>
+                            ))}
+                            <button 
+                                onClick={toggleTheme}
+                                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                                aria-label="Toggle Theme"
+                            >
+                                {darkMode ? <i className="fas fa-sun text-yellow-300"></i> : <i className="fas fa-moon text-brand"></i>}
+                            </button>
+                        </div>
+
+                        {/* Mobile Menu Button */}
+                        <div className="md:hidden flex items-center gap-4">
+                            <button onClick={toggleTheme} className="p-2">
+                                {darkMode ? <i className="fas fa-sun text-yellow-300"></i> : <i className="fas fa-moon text-brand"></i>}
+                            </button>
+                            <button onClick={() => setMenuOpen(!menuOpen)} className="text-2xl">
+                                <i className={`fas ${menuOpen ? 'fa-times' : 'fa-bars'}`}></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Mobile Dropdown */}
+                    {menuOpen && (
+                        <div className="md:hidden absolute top-full left-0 w-full glass-card border-t border-white/10 p-6 flex flex-col gap-4">
+                            {navLinks.map((link) => (
+                                <a key={link} href={`#${link.toLowerCase()}`} onClick={() => setMenuOpen(false)} className="text-lg font-medium hover:text-brand">
+                                    {link}
+                                </a>
+                            ))}
+                        </div>
+                    )}
+                </nav>
+            );
+        };
+
+        const Hero = () => {
+            return (
+                <section id="home" className="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
+                    <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div className="order-2 md:order-1 animate-fade-in-up">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand/10 border border-brand/20 text-brand text-xs font-bold uppercase tracking-widest mb-6">
+                                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                {profileData.status}
+                            </div>
+                            <h1 className="text-5xl md:text-7xl font-bold mb-4 leading-tight">
+                                Hi, I'm <span className="text-gradient">{profileData.name}</span>
+                            </h1>
+                            <h2 className="text-2xl md:text-3xl font-light text-gray-500 dark:text-gray-400 mb-8">
+                                {profileData.role}
+                            </h2>
+                            <p className="text-lg text-gray-600 dark:text-gray-300 mb-10 max-w-lg leading-relaxed">
+                                {profileData.bio}
+                            </p>
+                            
+                            <div className="flex flex-wrap gap-4">
+                                <a href="#contact" className="px-8 py-4 bg-brand hover:bg-brand-light text-white font-bold rounded-lg transition-all shadow-[0_0_20px_rgba(89,49,107,0.4)] hover:shadow-[0_0_30px_rgba(89,49,107,0.6)]">
+                                    Get In Touch
+                                </a>
+                                <button onClick={() => alert("Resume download started (Demo)")} className="px-8 py-4 border border-brand text-brand dark:text-white hover:bg-brand hover:text-white font-bold rounded-lg transition-all flex items-center gap-2">
+                                    <i className="fas fa-download"></i> Download CV
+                                </button>
+                            </div>
+
+                            <div className="mt-12 flex gap-6">
+                                {['github', 'linkedin', 'twitter', 'instagram'].map(social => (
+                                    <a key={social} href="#" className="text-2xl text-gray-400 hover:text-brand transition-colors transform hover:scale-110">
+                                        <i className={`fab fa-${social}`}></i>
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="order-1 md:order-2 flex justify-center relative animate-float">
+                            {/* Profile Pic Placeholder */}
+                            <div className="relative w-64 h-64 md:w-80 md:h-80">
+                                <div className="absolute inset-0 bg-brand rounded-full blur-2xl opacity-20 animate-pulse"></div>
+                                <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-brand/30 p-2">
+                                    <img 
+                                        src="https://api.dicebear.com/7.x/avataaars/svg?seed=Muthu&backgroundColor=b6e3f4" 
+                                        alt="Muthu Murugesan" 
+                                        className="w-full h-full object-cover rounded-full bg-gray-200"
+                                    />
+                                </div>
+                                {/* Floating Tech Icons */}
+                                <div className="absolute -top-4 -right-4 p-3 bg-white dark:bg-dark-card rounded-lg shadow-xl animate-bounce">
+                                    <i className="fab fa-react text-3xl text-blue-400"></i>
+                                </div>
+                                <div className="absolute -bottom-4 -left-4 p-3 bg-white dark:bg-dark-card rounded-lg shadow-xl animate-bounce" style={{animationDelay: '1s'}}>
+                                    <i className="fab fa-node-js text-3xl text-green-500"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Scroll Indicator */}
+                    <a href="#about" className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce text-gray-400 hover:text-brand">
+                        <i className="fas fa-chevron-down text-2xl"></i>
+                    </a>
+                </section>
+            );
+        };
+
+        const About = () => {
+            return (
+                <section id="about" className="py-20 relative">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <div className="glass-card rounded-2xl p-8 md:p-12">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-8 flex items-center gap-4">
+                                <span className="w-12 h-1 bg-brand"></span>
+                                About Me
+                            </h2>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                                <div>
+                                    <p className="text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+                                        {profileData.bio} I honed my skills through practical learning and successfully executed full-stack web development projects, with a particular focus on inventory management systems.
+                                    </p>
+                                    <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+                                        I'm actively seeking new opportunities to contribute my knowledge and passion in a dynamic work environment. With certifications in Cybersecurity and Big Data, I bring a well-rounded technical perspective.
+                                    </p>
+                                    
+                                    <div className="flex flex-wrap gap-4">
+                                        <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full text-sm font-medium border border-white/10">
+                                            <i className="fas fa-map-marker-alt text-brand"></i> {profileData.location}
+                                        </div>
+                                        <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full text-sm font-medium border border-white/10">
+                                            <i className="fas fa-graduation-cap text-brand"></i> BE Computer Science
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    {profileData.stats.map((stat, i) => (
+                                        <div key={i} className="p-6 bg-brand/5 rounded-xl border border-brand/10 hover:border-brand/30 transition-colors text-center">
+                                            <h3 className="text-3xl font-bold text-brand mb-1">{stat.value}</h3>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider">{stat.label}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Skills = () => {
+            return (
+                <section id="skills" className="py-20 bg-white/5 dark:bg-black/20">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Technical <span className="text-gradient">Proficiency</span></h2>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8">
+                            {profileData.skills.map((skill, i) => (
+                                <div key={i} className="group">
+                                    <div className="flex justify-between mb-2">
+                                        <span className="font-medium text-gray-700 dark:text-gray-300">{skill.name}</span>
+                                        <span className="text-brand font-mono">{skill.level}%</span>
+                                    </div>
+                                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                        <div 
+                                            className="h-full bg-gradient-to-r from-brand to-brand-accent rounded-full transition-all duration-1000 ease-out group-hover:opacity-80"
+                                            style={{ width: `${skill.level}%` }}
+                                        ></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Experience = () => {
+            return (
+                <section id="experience" className="py-20">
+                    <div className="max-w-4xl mx-auto px-6">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Professional <span className="text-gradient">Journey</span></h2>
+                        
+                        <div className="relative border-l-2 border-brand/30 ml-3 md:ml-6 space-y-12">
+                            {profileData.experience.map((exp, i) => (
+                                <div key={i} className="relative pl-8 md:pl-12 group">
+                                    {/* Dot */}
+                                    <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-brand border-4 border-gray-900 group-hover:scale-125 transition-transform"></div>
+                                    
+                                    <div className="glass-card p-6 rounded-xl hover:border-brand/50 transition-colors">
+                                        <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+                                            <div>
+                                                <h3 className="text-xl font-bold text-white dark:text-gray-100">{exp.role}</h3>
+                                                <p className="text-brand font-medium">{exp.company}</p>
+                                            </div>
+                                            <span className="inline-block mt-2 md:mt-0 px-3 py-1 bg-white/10 rounded text-xs font-mono uppercase tracking-wide text-gray-400">
+                                                {exp.period}
+                                            </span>
+                                        </div>
+                                        <p className="text-gray-400 text-sm leading-relaxed">
+                                            {exp.desc}
+                                        </p>
+                                        <div className="mt-4 flex gap-2">
+                                            {exp.type === 'Full-time' && <span className="text-[10px] uppercase font-bold text-green-400 bg-green-400/10 px-2 py-1 rounded">Full-time</span>}
+                                            {exp.type === 'Freelance' && <span className="text-[10px] uppercase font-bold text-blue-400 bg-blue-400/10 px-2 py-1 rounded">Freelance</span>}
+                                            {exp.type === 'Internship' && <span className="text-[10px] uppercase font-bold text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded">Internship</span>}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Projects = () => {
+            return (
+                <section id="projects" className="py-20 bg-white/5 dark:bg-black/20">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Featured <span className="text-gradient">Projects</span></h2>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {profileData.projects.map((project, i) => (
+                                <div key={i} className="glass-card rounded-xl overflow-hidden group hover:-translate-y-2 transition-transform duration-300">
+                                    <div className="h-48 bg-gradient-to-br from-brand-dark to-brand relative flex items-center justify-center overflow-hidden">
+                                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                                        <i className="fas fa-code text-6xl text-white/10 group-hover:scale-110 transition-transform duration-500"></i>
+                                        <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md px-3 py-1 rounded text-xs font-bold text-white border border-white/10">
+                                            {project.category}
+                                        </div>
+                                    </div>
+                                    <div className="p-6">
+                                        <h3 className="text-xl font-bold mb-2 group-hover:text-brand transition-colors">{project.title}</h3>
+                                        <p className="text-gray-400 text-sm mb-4 h-10 overflow-hidden text-ellipsis">{project.desc}</p>
+                                        
+                                        <div className="flex flex-wrap gap-2 mb-6">
+                                            {project.tech.map((t, idx) => (
+                                                <span key={idx} className="text-[10px] font-mono bg-brand/10 text-brand px-2 py-1 rounded">{t}</span>
+                                            ))}
+                                        </div>
+
+                                        <div className="flex justify-between items-center pt-4 border-t border-white/5">
+                                            <span className="text-xs font-bold text-gray-500">
+                                                <i className="fas fa-chart-line mr-1"></i> {project.metrics}
+                                            </span>
+                                            <div className="flex gap-3">
+                                                <button className="text-gray-400 hover:text-white transition-colors"><i className="fab fa-github"></i></button>
+                                                <button className="text-brand hover:text-brand-light transition-colors"><i className="fas fa-external-link-alt"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Contact = () => {
+            const [formState, setFormState] = useState({ name: '', email: '', message: '' });
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                alert(`Thanks ${formState.name}! Message sent (Demo).`);
+                setFormState({ name: '', email: '', message: '' });
+            };
+
+            return (
+                <section id="contact" className="py-20 relative overflow-hidden">
+                    {/* Decorative Glow */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand/20 rounded-full blur-[120px] pointer-events-none"></div>
+
+                    <div className="max-w-4xl mx-auto px-6 relative z-10">
+                        <div className="text-center mb-12">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4">Let's <span className="text-gradient">Connect</span></h2>
+                            <p className="text-gray-400">Have a project in mind or want to chat about tech?</p>
+                        </div>
+
+                        <div className="glass-card p-8 md:p-12 rounded-2xl">
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium text-gray-400">Name</label>
+                                        <input 
+                                            required
+                                            type="text" 
+                                            value={formState.name}
+                                            onChange={e => setFormState({...formState, name: e.target.value})}
+                                            className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all text-white"
+                                            placeholder="John Doe"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium text-gray-400">Email</label>
+                                        <input 
+                                            required
+                                            type="email" 
+                                            value={formState.email}
+                                            onChange={e => setFormState({...formState, email: e.target.value})}
+                                            className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all text-white"
+                                            placeholder="john@example.com"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium text-gray-400">Message</label>
+                                    <textarea 
+                                        required
+                                        rows="4"
+                                        value={formState.message}
+                                        onChange={e => setFormState({...formState, message: e.target.value})}
+                                        className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-all text-white"
+                                        placeholder="Tell me about your project..."
+                                    ></textarea>
+                                </div>
+                                <button type="submit" className="w-full bg-brand hover:bg-brand-light text-white font-bold py-4 rounded-lg transition-all transform hover:scale-[1.02] shadow-lg shadow-brand/20">
+                                    Send Message <i className="fas fa-paper-plane ml-2"></i>
+                                </button>
+                            </form>
+
+                            <div className="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded-full bg-brand/20 flex items-center justify-center text-brand">
+                                        <i className="fas fa-envelope"></i>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs text-gray-500">Email me at</p>
+                                        <a href="mailto:kvpmuhtu7@gmail.com" className="text-sm font-medium hover:text-brand">kvpmuhtu7@gmail.com</a>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded-full bg-brand/20 flex items-center justify-center text-brand">
+                                        <i className="fas fa-phone"></i>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs text-gray-500">Call me</p>
+                                        <a href="tel:+916385823340" className="text-sm font-medium hover:text-brand">+91 63858 23340</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Footer = () => (
+            <footer className="py-8 bg-black text-center text-gray-600 text-sm">
+                <p>&copy; 2026 Muthu Murugesan. Made with <i className="fas fa-heart text-red-500"></i> using React & Three.js</p>
+            </footer>
+        );
+
+        const App = () => {
+            // Check system preference or default to dark
+            const [darkMode, setDarkMode] = useState(() => {
+                if (typeof window !== 'undefined') {
+                    return localStorage.getItem('theme') === 'light' ? false : true;
+                }
+                return true;
+            });
+
+            useEffect(() => {
+                const root = window.document.documentElement;
+                if (darkMode) {
+                    root.classList.add('dark');
+                    root.classList.remove('light');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    root.classList.add('light');
+                    root.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                }
+            }, [darkMode]);
+
+            const toggleTheme = () => setDarkMode(!darkMode);
+
+            return (
+                <div className={`min-h-screen font-sans transition-colors duration-300 ${darkMode ? 'bg-dark-bg text-dark-text' : 'bg-light-bg text-light-text'}`}>
+                    <ParticleNetwork darkMode={darkMode} />
+                    <Navbar darkMode={darkMode} toggleTheme={toggleTheme} />
+                    <Hero />
+                    <About />
+                    <Skills />
+                    <Experience />
+                    <Projects />
+                    <Contact />
+                    <Footer />
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
