@@ -4,269 +4,1705 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Google Ads Bro | More Revenue, Same Ad Budget</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
     />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap");
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
       :root {
-        --royal-blue: #3f5ed9;
-        --deep-navy: #1e2a78;
-        --golden-yellow: #eec013;
+        --navy: #0d1340;
+        --blue: #2347d4;
+        --royal: #3f5ed9;
+        --gold: #f0c130;
+        --gold-light: #fde878;
+        --white: #ffffff;
+        --off: #f5f6ff;
+        --text: #1a1f4e;
+        --muted: #6b7280;
+        --card: #ffffff;
+        --border: rgba(63, 94, 217, 0.12);
+        --glow: rgba(63, 94, 217, 0.35);
       }
 
-      .tail-container {
-        font-family: "Inter", system_ui, sans-serif;
+      html {
+        scroll-behavior: smooth;
+        font-size: 16px;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--white);
+        color: var(--text);
+        overflow-x: hidden;
+        cursor: none;
       }
 
-      .heading-font {
-        font-family: "Space Grotesk", sans-serif;
+      /* ── CURSOR ── */
+      #cursor {
+        position: fixed;
+        width: 12px;
+        height: 12px;
+        background: var(--gold);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition:
+          transform 0.15s ease,
+          background 0.3s;
+        mix-blend-mode: multiply;
+      }
+      #cursor-ring {
+        position: fixed;
+        width: 38px;
+        height: 38px;
+        border: 1.5px solid var(--blue);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition:
+          transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+          width 0.3s,
+          height 0.3s,
+          border-color 0.3s;
+        opacity: 0.7;
+      }
+      body:has(a:hover) #cursor,
+      body:has(button:hover) #cursor {
+        transform: translate(-50%, -50%) scale(2.5);
+        background: var(--blue);
+      }
+      body:has(a:hover) #cursor-ring,
+      body:has(button:hover) #cursor-ring {
+        width: 60px;
+        height: 60px;
+        border-color: var(--gold);
+        opacity: 0.4;
       }
 
-      .hero-bg {
-        background: linear-gradient(135deg, #1e2a78 0%, #3f5ed9 100%);
+      /* ── CANVAS ── */
+      #hero-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
       }
 
-      .nav-link {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      /* ── SCROLLBAR ── */
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f0f0f8;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--royal);
+        border-radius: 99px;
       }
 
-      .nav-link:hover {
-        color: #eec013;
+      /* ── NAV ── */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        padding: 0 clamp(1rem, 4vw, 3rem);
+        transition: all 0.4s;
+      }
+      nav.scrolled {
+        background: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: 0 4px 40px rgba(35, 71, 212, 0.08);
+      }
+      .nav-inner {
+        max-width: 1320px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 76px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+      }
+      .logo-mark {
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, var(--blue), var(--royal));
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        flex-shrink: 0;
+      }
+      .logo-bars {
+        display: flex;
+        align-items: flex-end;
+        gap: 3px;
+        height: 24px;
+      }
+      .logo-bars span {
+        width: 5px;
+        background: #fff;
+        border-radius: 3px;
+        display: block;
+      }
+      .logo-bars span:nth-child(1) {
+        height: 14px;
+      }
+      .logo-bars span:nth-child(2) {
+        height: 22px;
+      }
+      .logo-bars span:nth-child(3) {
+        height: 10px;
+      }
+      .logo-dot {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        width: 14px;
+        height: 14px;
+        background: var(--gold);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8px;
+        font-weight: 800;
+        color: var(--navy);
+      }
+      .logo-text {
+        font-family: "Syne", sans-serif;
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--navy);
+        letter-spacing: -0.02em;
+      }
+      .logo-sub {
+        font-size: 0.6rem;
+        color: var(--muted);
+        display: block;
+        margin-top: -2px;
+        letter-spacing: 0.05em;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 2.5rem;
+        list-style: none;
+      }
+      .nav-links a {
+        font-size: 0.88rem;
+        font-weight: 500;
+        color: var(--text);
+        text-decoration: none;
+        position: relative;
+        padding: 0.25rem 0;
+        transition: color 0.3s;
+      }
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--gold);
+        border-radius: 2px;
+        transition: width 0.3s;
+      }
+      .nav-links a:hover {
+        color: var(--blue);
+      }
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+      .nav-cta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .btn-outline {
+        padding: 0.65rem 1.4rem;
+        border: 1.5px solid var(--royal);
+        color: var(--royal);
+        border-radius: 100px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        background: transparent;
+        transition: all 0.3s;
+        font-family: "DM Sans", sans-serif;
+      }
+      .btn-outline:hover {
+        background: var(--royal);
+        color: #fff;
+      }
+      .btn-primary {
+        padding: 0.65rem 1.5rem;
+        background: linear-gradient(135deg, var(--blue), var(--royal));
+        color: #fff;
+        border: none;
+        border-radius: 100px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s;
+        box-shadow: 0 4px 20px var(--glow);
+      }
+      .btn-primary:hover {
         transform: translateY(-2px);
+        box-shadow: 0 8px 30px var(--glow);
+      }
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        padding: 8px;
+        background: none;
+        border: none;
+      }
+      .hamburger span {
+        width: 24px;
+        height: 2px;
+        background: var(--navy);
+        border-radius: 2px;
+        transition: all 0.3s;
+        display: block;
       }
 
-      .logo-icon {
-        width: 42px;
-        height: 42px;
+      /* ── MOBILE NAV ── */
+      .mobile-nav {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: var(--navy);
+        z-index: 999;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        transform: translateX(100%);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .mobile-nav.open {
+        transform: translateX(0);
+      }
+      .mobile-nav a {
+        font-family: "Syne", sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+      .mobile-nav a:hover {
+        color: var(--gold);
       }
 
-      .service-card {
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      /* ── HERO ── */
+      .hero {
+        position: relative;
+        min-height: 100vh;
+        background: linear-gradient(
+          150deg,
+          #060b25 0%,
+          #0d1340 40%,
+          #1a2680 100%
+        );
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+      }
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 0 clamp(1rem, 4vw, 3rem);
+        padding-top: 100px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        width: 100%;
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(12px);
+        padding: 0.5rem 1.2rem;
+        border-radius: 100px;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.85);
+        margin-bottom: 1.5rem;
+        animation: fadeUp 0.8s 0.1s both;
+      }
+      .pulse-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--gold);
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.5;
+          transform: scale(0.8);
+        }
+      }
+      .hero h1 {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(3rem, 6vw, 5.5rem);
+        font-weight: 800;
+        line-height: 0.95;
+        letter-spacing: -0.04em;
+        color: #fff;
+        margin-bottom: 1.5rem;
+        animation: fadeUp 0.8s 0.2s both;
+      }
+      .hero h1 .accent {
+        color: var(--gold);
+        display: block;
+      }
+      .hero-desc {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.65);
+        max-width: 460px;
+        margin-bottom: 2.5rem;
+        animation: fadeUp 0.8s 0.35s both;
+      }
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        animation: fadeUp 0.8s 0.5s both;
+      }
+      .btn-hero {
+        padding: 1rem 2rem;
+        border-radius: 100px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: none;
+      }
+      .btn-hero-gold {
+        background: var(--gold);
+        color: var(--navy);
+        box-shadow: 0 8px 32px rgba(240, 193, 48, 0.4);
+      }
+      .btn-hero-gold:hover {
+        background: var(--gold-light);
+        transform: translateY(-3px);
+        box-shadow: 0 14px 40px rgba(240, 193, 48, 0.5);
+      }
+      .btn-hero-ghost {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+        border: 1.5px solid rgba(255, 255, 255, 0.2);
+      }
+      .btn-hero-ghost:hover {
+        background: rgba(255, 255, 255, 0.14);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-3px);
+      }
+      .hero-social-proof {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2.5rem;
+        animation: fadeUp 0.8s 0.65s both;
+      }
+      .stars-block {
+        display: flex;
+        gap: 3px;
+        color: var(--gold);
+      }
+      .hero-right {
+        position: relative;
+        animation: fadeUp 0.8s 0.3s both;
+      }
+      .dashboard-card {
+        background: rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 28px;
+        padding: 2rem;
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+      }
+      .dash-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        margin-bottom: 1.5rem;
+      }
+      .dash-title {
+        font-size: 0.75rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 0.3rem;
+      }
+      .dash-val {
+        font-family: "Syne", sans-serif;
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: -0.03em;
+      }
+      .roi-chip {
+        background: rgba(52, 211, 153, 0.15);
+        color: #34d399;
+        padding: 0.3rem 0.8rem;
+        border-radius: 100px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        border: 1px solid rgba(52, 211, 153, 0.25);
+      }
+      .dash-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .metric-item .label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: rgba(255, 255, 255, 0.35);
+        margin-bottom: 0.3rem;
+      }
+      .metric-item .val {
+        font-family: "Syne", sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+      }
+      .metric-item.green .val {
+        color: #34d399;
+      }
+      .metric-item.blue .val {
+        color: #60a5fa;
+      }
+      .metric-item.gold .val {
+        color: var(--gold);
+      }
+      .chart-bar-wrap {
+        display: flex;
+        align-items: flex-end;
+        gap: 6px;
+        height: 60px;
+        margin-top: 0.5rem;
+      }
+      .chart-bar {
+        flex: 1;
+        border-radius: 6px 6px 0 0;
+        transition: height 0.8s ease;
+        animation: barGrow 1.2s both;
+      }
+      @keyframes barGrow {
+        from {
+          transform: scaleY(0);
+          transform-origin: bottom;
+        }
+        to {
+          transform: scaleY(1);
+          transform-origin: bottom;
+        }
+      }
+      .floating-badge {
+        position: absolute;
+        background: #fff;
+        border-radius: 20px;
+        padding: 0.8rem 1.2rem;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        font-size: 0.82rem;
+      }
+      .floating-badge-1 {
+        bottom: -24px;
+        left: -32px;
+        animation: float 4s ease-in-out infinite;
+      }
+      .floating-badge-2 {
+        top: -20px;
+        right: -20px;
+        animation: float 4s ease-in-out infinite 0.7s;
+        background: var(--navy);
+      }
+      .badge-emoji {
+        font-size: 1.5rem;
+      }
+      .badge-label {
+        font-size: 0.65rem;
+        color: var(--muted);
+        display: block;
+      }
+      .badge-val {
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        color: var(--navy);
+        line-height: 1.2;
+      }
+      .floating-badge-2 .badge-val {
+        color: var(--gold);
+      }
+      .floating-badge-2 .badge-label {
+        color: rgba(255, 255, 255, 0.5);
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
-      .service-card:hover {
-        transform: translateY(-12px);
-        box-shadow: 0 25px 50px -12px rgb(63 94 217 / 0.25);
+      /* ── TRUST BAR ── */
+      .trust-bar {
+        background: var(--off);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        padding: 1.2rem 0;
+        overflow: hidden;
+        position: relative;
+      }
+      .trust-track {
+        display: flex;
+        gap: 3rem;
+        animation: scroll 22s linear infinite;
+        width: max-content;
+        align-items: center;
+      }
+      .trust-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--muted);
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .trust-item i {
+        color: var(--royal);
+      }
+      .trust-sep {
+        color: var(--border);
+        font-size: 1.2rem;
+      }
+      @keyframes scroll {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
       }
 
-      .stat-number {
-        font-size: 3.5rem;
+      /* ── SECTION BASE ── */
+      section {
+        padding: clamp(4rem, 8vw, 8rem) 0;
+      }
+      .section-inner {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 0 clamp(1rem, 4vw, 3rem);
+      }
+      .section-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.75rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        font-weight: 600;
+        padding: 0.4rem 1rem;
+        border-radius: 100px;
+        margin-bottom: 1.2rem;
+      }
+      .label-gold {
+        background: rgba(240, 193, 48, 0.12);
+        color: #b8900a;
+        border: 1px solid rgba(240, 193, 48, 0.25);
+      }
+      .label-blue {
+        background: rgba(63, 94, 217, 0.1);
+        color: var(--royal);
+        border: 1px solid rgba(63, 94, 217, 0.2);
+      }
+      .section-title {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+        font-weight: 800;
         line-height: 1;
+        letter-spacing: -0.04em;
+        color: var(--navy);
+      }
+      .section-sub {
+        font-size: 1.05rem;
+        color: var(--muted);
+        line-height: 1.7;
+        max-width: 540px;
+        margin-top: 1rem;
+      }
+
+      /* ── ABOUT ── */
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.3fr;
+        gap: 5rem;
+        align-items: center;
+        margin-top: 4rem;
+      }
+      .about-sticky {
+        position: sticky;
+        top: 120px;
+      }
+      .promises {
+        margin-top: 2.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .promise-item {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+      .promise-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        font-weight: 800;
+        flex-shrink: 0;
+      }
+      .pi-gold {
+        background: rgba(240, 193, 48, 0.15);
+        color: #a07008;
+      }
+      .pi-blue {
+        background: rgba(63, 94, 217, 0.12);
+        color: var(--royal);
+      }
+      .promise-title {
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 0.25rem;
+      }
+      .promise-text {
+        font-size: 0.88rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .why-card {
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: 28px;
+        padding: 2.5rem;
+        box-shadow: 0 4px 40px rgba(35, 71, 212, 0.05);
+      }
+      .why-card h3 {
+        font-family: "Syne", sans-serif;
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: var(--navy);
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .why-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.8rem;
+      }
+      .why-item {
+        display: flex;
+        gap: 0.8rem;
+      }
+      .why-icon {
+        font-size: 1.4rem;
+        margin-top: 0.2rem;
+      }
+      .why-item-title {
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+      }
+      .why-item-text {
+        font-size: 0.82rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      /* ── SERVICES ── */
+      .services-bg {
+        background: var(--off);
+      }
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-top: 4rem;
+      }
+      .service-card {
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: 28px;
+        padding: 2.2rem;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        cursor: pointer;
+      }
+      .service-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, var(--blue), var(--royal));
+        opacity: 0;
+        transition: opacity 0.4s;
+        z-index: 0;
+      }
+      .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 30px 60px var(--glow);
+        border-color: var(--royal);
+      }
+      .service-card:hover::before {
+        opacity: 1;
+      }
+      .service-card > * {
+        position: relative;
+        z-index: 1;
+      }
+      .service-card:hover .card-title,
+      .service-card:hover .card-text,
+      .service-card:hover .card-list li {
+        color: #fff;
+      }
+      .service-card:hover .card-icon-wrap {
+        background: rgba(255, 255, 255, 0.15);
+      }
+      .card-icon-wrap {
+        width: 58px;
+        height: 58px;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s;
+      }
+      .ci-blue {
+        background: rgba(63, 94, 217, 0.1);
+      }
+      .ci-amber {
+        background: rgba(251, 191, 36, 0.1);
+      }
+      .ci-purple {
+        background: rgba(139, 92, 246, 0.1);
+      }
+      .card-title {
+        font-family: "Syne", sans-serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--navy);
+        margin-bottom: 0.8rem;
+        transition: color 0.3s;
+      }
+      .card-text {
+        font-size: 0.88rem;
+        color: var(--muted);
+        line-height: 1.6;
+        transition: color 0.3s;
+      }
+      .card-list {
+        list-style: none;
+        margin-top: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+      }
+      .card-list li {
+        font-size: 0.82rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--muted);
+        transition: color 0.3s;
+      }
+      .card-list li i {
+        color: #34d399;
+        font-size: 0.75rem;
+      }
+      .card-badge {
+        margin-top: 2rem;
+        text-align: center;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+      }
+      .card-badge-val {
+        font-family: "Syne", sans-serif;
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--royal);
+      }
+      .card-badge-label {
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-top: 0.2rem;
+      }
+      .service-card:hover .card-badge {
+        border-top-color: rgba(255, 255, 255, 0.15);
+      }
+      .service-card:hover .card-badge-val {
+        color: var(--gold);
+      }
+      .service-card:hover .card-badge-label {
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .service-card:hover .card-list li i {
+        color: var(--gold-light);
+      }
+
+      /* ── STATS ── */
+      .stats-section {
+        background: linear-gradient(135deg, var(--navy) 0%, #1a2680 100%);
+        color: #fff;
+        overflow: hidden;
+        position: relative;
+      }
+      .stats-section::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+          circle,
+          rgba(63, 94, 217, 0.3) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+        margin-top: 3rem;
+      }
+      .stat-card {
+        text-align: center;
+        padding: 2.5rem 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+      .stat-card::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--gold), var(--gold-light));
+        transform: scaleX(0);
+        transition: transform 0.4s;
+      }
+      .stat-card:hover {
+        transform: translateY(-6px);
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.15);
+      }
+      .stat-card:hover::after {
+        transform: scaleX(1);
+      }
+      .stat-val {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        color: var(--gold);
+        line-height: 1;
+      }
+      .stat-label {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.5);
+        margin-top: 0.7rem;
+        font-weight: 300;
+      }
+      .stat-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
+        opacity: 0.6;
+      }
+
+      /* ── RESULTS ── */
+      .result-card {
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: 28px;
+        padding: 2.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        transition: all 0.3s;
+        box-shadow: 0 4px 30px rgba(35, 71, 212, 0.04);
+      }
+      .result-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 50px rgba(35, 71, 212, 0.1);
+        border-color: var(--royal);
+      }
+      .result-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+      .client-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .client-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Syne", sans-serif;
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: #fff;
+      }
+      .ca-blue {
+        background: linear-gradient(135deg, var(--blue), var(--royal));
+      }
+      .ca-green {
+        background: linear-gradient(135deg, #059669, #10b981);
+      }
+      .ca-purple {
+        background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      }
+      .client-name {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--navy);
+      }
+      .client-niche {
+        font-size: 0.78rem;
+        color: var(--muted);
+      }
+      .result-revenue {
+        font-family: "Syne", sans-serif;
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: var(--navy);
+        text-align: right;
+      }
+      .result-growth {
+        font-size: 0.78rem;
+        color: #059669;
+        font-weight: 600;
+        display: block;
+        margin-top: 0.2rem;
+      }
+      .progress-wrap {
+        margin-top: 0.5rem;
+      }
+      .progress-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+      }
+      .progress-track {
+        height: 8px;
+        background: var(--off);
+        border-radius: 100px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--blue), var(--gold));
+        border-radius: 100px;
+        transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .result-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.8rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+      }
+      .rm-item .rm-val {
+        font-family: "Syne", sans-serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--navy);
+      }
+      .rm-item .rm-label {
+        font-size: 0.68rem;
+        color: var(--muted);
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      /* ── TESTIMONIALS ── */
+      .testimonials-bg {
+        background: var(--off);
+      }
+      .testi-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-top: 3.5rem;
+      }
+      .testi-card {
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: 28px;
+        padding: 2.2rem;
+        transition: all 0.3s;
+      }
+      .testi-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 50px rgba(35, 71, 212, 0.08);
+        border-color: var(--royal);
+      }
+      .testi-stars {
+        display: flex;
+        gap: 3px;
+        color: var(--gold);
+        font-size: 0.9rem;
+        margin-bottom: 1.2rem;
+      }
+      .testi-quote {
+        font-size: 0.95rem;
+        line-height: 1.7;
+        color: var(--text);
+        font-style: italic;
+        position: relative;
+        padding-left: 1.2rem;
+      }
+      .testi-quote::before {
+        content: '"';
+        position: absolute;
+        left: 0;
+        top: -0.2rem;
+        font-size: 2rem;
+        color: var(--gold);
+        font-style: normal;
+        line-height: 1;
+      }
+      .testi-author {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-top: 1.5rem;
+        padding-top: 1.2rem;
+        border-top: 1px solid var(--border);
+      }
+      .testi-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #fff;
+      }
+      .ta-1 {
+        background: linear-gradient(135deg, #2347d4, #3f5ed9);
+      }
+      .ta-2 {
+        background: linear-gradient(135deg, #059669, #34d399);
+      }
+      .ta-3 {
+        background: linear-gradient(135deg, #dc2626, #f87171);
+      }
+      .testi-name {
+        font-weight: 700;
+        font-size: 0.88rem;
+        color: var(--navy);
+      }
+      .testi-role {
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+
+      /* ── CTA ── */
+      .cta-section {
+        background: linear-gradient(
+          150deg,
+          #060b25 0%,
+          #0d1340 50%,
+          #1a2680 100%
+        );
+        position: relative;
+        overflow: hidden;
+      }
+      #cta-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .cta-inner {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 680px;
+        margin: 0 auto;
+      }
+      .cta-inner h2 {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(2.5rem, 5vw, 4.5rem);
+        font-weight: 800;
+        line-height: 0.95;
+        letter-spacing: -0.04em;
+        color: #fff;
+        margin-bottom: 1.2rem;
+      }
+      .cta-inner h2 span {
+        color: var(--gold);
+      }
+      .cta-sub {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.65);
+        margin-bottom: 3rem;
+        line-height: 1.6;
+      }
+      .cta-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      .form-input {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1.5px solid rgba(255, 255, 255, 0.12);
+        border-radius: 16px;
+        padding: 1rem 1.3rem;
+        color: #fff;
+        font-size: 0.92rem;
+        font-family: "DM Sans", sans-serif;
+        transition: all 0.3s;
+        width: 100%;
+        outline: none;
+      }
+      .form-input::placeholder {
+        color: rgba(255, 255, 255, 0.35);
+      }
+      .form-input:focus {
+        border-color: var(--gold);
+        background: rgba(255, 255, 255, 0.09);
+      }
+      .btn-cta {
+        padding: 1.1rem;
+        background: var(--gold);
+        color: var(--navy);
+        border: none;
+        border-radius: 16px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: "Syne", sans-serif;
+        letter-spacing: -0.01em;
+        transition: all 0.3s;
+        box-shadow: 0 8px 32px rgba(240, 193, 48, 0.35);
+        margin-top: 0.5rem;
+      }
+      .btn-cta:hover {
+        background: var(--gold-light);
+        transform: translateY(-3px);
+        box-shadow: 0 14px 40px rgba(240, 193, 48, 0.45);
+      }
+      .form-note {
+        font-size: 0.78rem;
+        color: rgba(255, 255, 255, 0.35);
+        margin-top: 0.8rem;
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        background: #04071a;
+        color: rgba(255, 255, 255, 0.5);
+        padding: 5rem 0 2.5rem;
+      }
+      .footer-inner {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 0 clamp(1rem, 4vw, 3rem);
+      }
+      .footer-top {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+        gap: 3rem;
+        padding-bottom: 3rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .footer-brand p {
+        font-size: 0.88rem;
+        line-height: 1.7;
+        margin-top: 1rem;
+        max-width: 260px;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .footer-col-title {
+        font-family: "Syne", sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 1.2rem;
+        letter-spacing: 0.02em;
+      }
+      .footer-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .footer-links a {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.4);
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+      .footer-links a:hover {
+        color: var(--gold);
+      }
+      .footer-slot {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 20px;
+        padding: 1.5rem;
+      }
+      .slot-label {
+        font-size: 0.65rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 0.4rem;
+      }
+      .slot-date {
+        font-family: "Syne", sans-serif;
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 0.2rem;
+      }
+      .slot-sub {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 1rem;
+      }
+      .btn-reserve {
+        width: 100%;
+        padding: 0.7rem;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1.5px solid rgba(255, 255, 255, 0.12);
+        border-radius: 12px;
+        color: #fff;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .btn-reserve:hover {
+        background: var(--gold);
+        color: var(--navy);
+        border-color: var(--gold);
+      }
+      .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 2rem;
+        font-size: 0.8rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .footer-bottom a {
+        color: rgba(255, 255, 255, 0.4);
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+      .footer-bottom a:hover {
+        color: #fff;
+      }
+
+      /* ── SCROLL REVEAL ── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reveal-delay-1 {
+        transition-delay: 0.1s;
+      }
+      .reveal-delay-2 {
+        transition-delay: 0.2s;
+      }
+      .reveal-delay-3 {
+        transition-delay: 0.3s;
+      }
+      .reveal-delay-4 {
+        transition-delay: 0.4s;
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 1024px) {
+        .hero-content {
+          grid-template-columns: 1fr;
+          padding-top: 120px;
+        }
+        .hero-right {
+          display: none;
+        }
+        .about-grid {
+          grid-template-columns: 1fr;
+          gap: 3rem;
+        }
+        .about-sticky {
+          position: static;
+        }
+        .services-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .footer-top {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 768px) {
+        .nav-links,
+        .nav-cta {
+          display: none;
+        }
+        .hamburger {
+          display: flex;
+        }
+        .services-grid {
+          grid-template-columns: 1fr;
+        }
+        .testi-grid {
+          grid-template-columns: 1fr;
+        }
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+        .footer-top {
+          grid-template-columns: 1fr;
+        }
+        .why-grid {
+          grid-template-columns: 1fr;
+        }
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        #cursor,
+        #cursor-ring {
+          display: none;
+        }
+      }
+      @media (max-width: 480px) {
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
-  <body class="tail-container bg-white text-gray-900 overflow-x-hidden">
-    <!-- NAVBAR -->
-    <nav class="bg-white border-b border-gray-100 sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto">
-        <div class="px-6 py-5 flex items-center justify-between">
-          <!-- Logo -->
-          <div class="flex items-center gap-x-3">
-            <div
-              class="flex items-center justify-center w-10 h-10 bg-[#3F5ED9] rounded-2xl relative"
-            >
-              <div class="flex gap-1">
-                <div class="w-2 h-6 bg-white rounded"></div>
-                <div class="w-2 h-8 bg-white rounded"></div>
-                <div class="w-2 h-4 bg-white rounded"></div>
-              </div>
-              <div
-                class="absolute -top-1 -right-1 w-4 h-4 bg-[#EEC013] rounded-full flex items-center justify-center"
-              >
-                <span class="text-[#1E2A78] text-[10px] font-bold">B</span>
-              </div>
-            </div>
-            <div>
-              <span
-                class="heading-font text-2xl font-semibold tracking-tighter text-[#1E2A78]"
-                >Google Ads Bro</span
-              >
-              <p class="text-[10px] text-gray-500 -mt-1">
-                More revenue, same ad budget
-              </p>
-            </div>
-          </div>
+  <body>
+    <!-- CUSTOM CURSOR -->
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
 
-          <!-- Menu -->
-          <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
-            <a
-              href="#services"
-              class="nav-link text-gray-700 hover:text-[#3F5ED9]"
-              >Services</a
-            >
-            <a
-              href="#results"
-              class="nav-link text-gray-700 hover:text-[#3F5ED9]"
-              >Results</a
-            >
-            <a href="#about" class="nav-link text-gray-700 hover:text-[#3F5ED9]"
-              >About</a
-            >
-            <a
-              href="#testimonials"
-              class="nav-link text-gray-700 hover:text-[#3F5ED9]"
-              >Stories</a
-            >
-          </div>
+    <!-- MOBILE NAV -->
+    <div class="mobile-nav" id="mobileNav">
+      <a href="#about" onclick="closeMobileNav()">About</a>
+      <a href="#services" onclick="closeMobileNav()">Services</a>
+      <a href="#results" onclick="closeMobileNav()">Results</a>
+      <a href="#testimonials" onclick="closeMobileNav()">Stories</a>
+      <a href="#contact" onclick="closeMobileNav()" style="color: var(--gold)"
+        >Get Free Audit →</a
+      >
+    </div>
 
-          <div class="flex items-center gap-x-4">
-            <button
-              onclick="
-                document
-                  .getElementById('contact')
-                  .scrollIntoView({ behavior: 'smooth' })
-              "
-              class="px-6 py-3 text-sm font-semibold border border-[#3F5ED9] text-[#3F5ED9] rounded-2xl hover:bg-[#3F5ED9] hover:text-white transition-all"
-            >
-              Get Audit
-            </button>
-            <button
-              onclick="
-                document
-                  .getElementById('contact')
-                  .scrollIntoView({ behavior: 'smooth' })
-              "
-              class="px-6 py-3 text-sm font-semibold bg-[#3F5ED9] text-white rounded-2xl hover:bg-[#1E2A78] transition-all flex items-center gap-x-2"
-            >
-              <i class="fa-solid fa-rocket"></i>
-              <span>Start Now</span>
-            </button>
+    <!-- NAV -->
+    <nav id="mainNav">
+      <div class="nav-inner">
+        <a href="#" class="logo">
+          <div class="logo-mark">
+            <div class="logo-bars"><span></span><span></span><span></span></div>
+            <div class="logo-dot">B</div>
           </div>
+          <div>
+            <span class="logo-text">Google Ads Bro</span>
+            <span class="logo-sub">More revenue, same budget</span>
+          </div>
+        </a>
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#results">Results</a></li>
+          <li><a href="#testimonials">Stories</a></li>
+        </ul>
+        <div class="nav-cta">
+          <button class="btn-outline" onclick="scrollTo('contact')">
+            Get Audit
+          </button>
+          <button class="btn-primary" onclick="scrollTo('contact')">
+            <i class="fa-solid fa-rocket"></i> Start Now
+          </button>
         </div>
+        <button
+          class="hamburger"
+          onclick="toggleMobileNav()"
+          id="hamburgerBtn"
+          aria-label="Menu"
+        >
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </nav>
 
     <!-- HERO -->
-    <header class="hero-bg text-white">
-      <div
-        class="max-w-7xl mx-auto px-6 pt-24 pb-20 grid md:grid-cols-2 gap-12 items-center"
-      >
-        <div class="space-y-8">
-          <div
-            class="inline-flex items-center gap-x-2 bg-white/20 backdrop-blur-md px-5 py-2 rounded-3xl text-sm"
-          >
-            <div class="w-2 h-2 bg-[#EEC013] rounded-full animate-pulse"></div>
-            <span class="font-medium">Official Google Partner</span>
+    <header class="hero">
+      <canvas id="hero-canvas"></canvas>
+      <div class="hero-content">
+        <div class="hero-left">
+          <div class="hero-badge">
+            <div class="pulse-dot"></div>
+            Official Google Premier Partner
           </div>
-
-          <h1
-            class="heading-font text-6xl md:text-7xl font-semibold tracking-tighter leading-none"
-          >
-            More Revenue.<br />
-            <span class="text-[#EEC013]">Same Ad Budget.</span>
+          <h1>
+            More Revenue.<br /><span class="accent">Same Ad Budget.</span>
           </h1>
-
-          <p class="text-xl text-white/90 max-w-md">
-            We help service businesses scale profitably with Google Ads through
-            radical transparency, data-driven strategies, and zero guesswork.
+          <p class="hero-desc">
+            We help service businesses scale profitably with Google Ads —
+            radical transparency, zero guesswork, data-driven strategies that
+            actually move the needle.
           </p>
-
-          <div class="flex flex-wrap gap-4">
+          <div class="hero-actions">
             <button
-              onclick="
-                document
-                  .getElementById('contact')
-                  .scrollIntoView({ behavior: 'smooth' })
-              "
-              class="px-8 py-5 bg-[#EEC013] hover:bg-yellow-300 transition-all text-[#1E2A78] font-semibold rounded-3xl text-lg flex items-center gap-x-3 group"
+              class="btn-hero btn-hero-gold"
+              onclick="scrollTo('contact')"
             >
-              Get Your Free Audit
-              <i
-                class="fa-solid fa-arrow-right group-active:translate-x-2 transition"
-              ></i>
+              Get Your Free Audit <i class="fa-solid fa-arrow-right"></i>
             </button>
-
             <button
-              onclick="
-                document
-                  .getElementById('results')
-                  .scrollIntoView({ behavior: 'smooth' })
-              "
-              class="px-8 py-5 border-2 border-white/70 hover:border-white font-medium rounded-3xl text-lg transition-all"
+              class="btn-hero btn-hero-ghost"
+              onclick="scrollTo('results')"
             >
               See Real Results →
             </button>
           </div>
-
-          <div class="flex items-center gap-x-8 pt-6">
-            <div class="flex -space-x-4">
-              <div
-                class="w-8 h-8 bg-white/30 backdrop-blur rounded-2xl border-2 border-white flex items-center justify-center text-xs font-bold"
-              >
-                4.9
-              </div>
-            </div>
-            <div>
-              <div class="text-sm">Rated 4.9/5 by 87 service businesses</div>
-            </div>
+          <div class="hero-social-proof">
+            <div class="stars-block">★★★★★</div>
+            <span style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6)"
+              >Rated 4.9/5 by <strong style="color: #fff">87+</strong> service
+              businesses</span
+            >
           </div>
         </div>
-
-        <!-- Hero Visual -->
-        <div class="relative">
-          <div
-            class="bg-white/10 backdrop-blur-3xl border border-white/20 rounded-3xl p-8 shadow-2xl"
-          >
-            <div class="bg-white rounded-2xl overflow-hidden shadow-inner">
-              <!-- Mock Dashboard -->
-              <div class="p-6 border-b">
-                <div class="flex justify-between items-center">
-                  <div class="flex items-center gap-x-3">
-                    <div
-                      class="logo-icon bg-[#3F5ED9] rounded-2xl flex items-center justify-center text-white text-xl font-bold"
-                    >
-                      B
-                    </div>
-                    <div>
-                      <div class="font-semibold text-gray-900">
-                        Campaign Performance
-                      </div>
-                      <div class="text-emerald-500 text-sm font-medium">
-                        +183% ROI this month
-                      </div>
-                    </div>
-                  </div>
-                  <div class="text-right">
-                    <div class="text-4xl font-semibold text-[#1E2A78]">
-                      $124,890
-                    </div>
-                    <div class="text-sm text-gray-500">Revenue generated</div>
-                  </div>
-                </div>
+        <div class="hero-right">
+          <div class="dashboard-card">
+            <div class="dash-header">
+              <div>
+                <div class="dash-title">Monthly Revenue</div>
+                <div class="dash-val">$124,890</div>
               </div>
-              <div class="p-8 grid grid-cols-3 gap-6">
-                <div>
-                  <div class="text-xs text-gray-500 mb-1">CONVERSIONS</div>
-                  <div class="text-5xl font-semibold text-emerald-600">347</div>
-                </div>
-                <div>
-                  <div class="text-xs text-gray-500 mb-1">CPL</div>
-                  <div class="text-5xl font-semibold text-[#1E2A78]">$18.4</div>
-                </div>
-                <div>
-                  <div class="text-xs text-gray-500 mb-1">ROAS</div>
-                  <div class="text-5xl font-semibold text-emerald-600">
-                    8.4x
-                  </div>
-                </div>
+              <div class="roi-chip">+183% ROI</div>
+            </div>
+            <div class="dash-metrics">
+              <div class="metric-item green">
+                <div class="label">Conversions</div>
+                <div class="val">347</div>
+              </div>
+              <div class="metric-item blue">
+                <div class="label">CPL</div>
+                <div class="val">$18</div>
+              </div>
+              <div class="metric-item gold">
+                <div class="label">ROAS</div>
+                <div class="val">8.4x</div>
               </div>
             </div>
+            <div
+              style="
+                font-size: 0.65rem;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: rgba(255, 255, 255, 0.3);
+                margin-bottom: 0.5rem;
+              "
+            >
+              Performance this month
+            </div>
+            <div class="chart-bar-wrap">
+              <div
+                class="chart-bar"
+                style="
+                  height: 40%;
+                  background: rgba(63, 94, 217, 0.4);
+                  animation-delay: 0.1s;
+                "
+              ></div>
+              <div
+                class="chart-bar"
+                style="
+                  height: 55%;
+                  background: rgba(63, 94, 217, 0.5);
+                  animation-delay: 0.15s;
+                "
+              ></div>
+              <div
+                class="chart-bar"
+                style="
+                  height: 45%;
+                  background: rgba(63, 94, 217, 0.4);
+                  animation-delay: 0.2s;
+                "
+              ></div>
+              <div
+                class="chart-bar"
+                style="
+                  height: 70%;
+                  background: rgba(63, 94, 217, 0.6);
+                  animation-delay: 0.25s;
+                "
+              ></div>
+              <div
+                class="chart-bar"
+                style="
+                  height: 60%;
+                  background: rgba(63, 94, 217, 0.5);
+                  animation-delay: 0.3s;
+                "
+              ></div>
+              <div
+                class="chart-bar"
+                style="
+                  height: 85%;
+                  background: rgba(240, 193, 48, 0.7);
+                  animation-delay: 0.35s;
+                "
+              ></div>
+              <div
+                class="chart-bar"
+                style="
+                  height: 75%;
+                  background: rgba(240, 193, 48, 0.6);
+                  animation-delay: 0.4s;
+                "
+              ></div>
+              <div
+                class="chart-bar"
+                style="
+                  height: 95%;
+                  background: rgba(240, 193, 48, 0.9);
+                  animation-delay: 0.45s;
+                "
+              ></div>
+            </div>
           </div>
-
-          <!-- Floating badge -->
-          <div
-            class="absolute -bottom-6 -left-6 bg-white text-[#1E2A78] px-6 py-4 rounded-3xl shadow-2xl flex items-center gap-x-4"
-          >
-            <div class="text-4xl">🚀</div>
+          <div class="floating-badge floating-badge-1">
+            <div class="badge-emoji">🚀</div>
             <div>
-              <div class="font-semibold">Next client starts in</div>
-              <div class="text-[#EEC013] font-mono text-2xl font-bold">
-                14 days
-              </div>
+              <span class="badge-label">Next client starts</span>
+              <div class="badge-val">in 14 days</div>
+            </div>
+          </div>
+          <div class="floating-badge floating-badge-2">
+            <div class="badge-emoji">⚡</div>
+            <div>
+              <span class="badge-label" style="color: rgba(255, 255, 255, 0.4)"
+                >Active campaigns</span
+              >
+              <div class="badge-val">247+</div>
             </div>
           </div>
         </div>
@@ -274,139 +1710,147 @@
     </header>
 
     <!-- TRUST BAR -->
-    <div class="bg-white py-6 border-b">
-      <div class="max-w-7xl mx-auto px-6">
-        <div
-          class="flex flex-wrap justify-center items-center gap-x-12 gap-y-6 opacity-75"
-        >
-          <div class="flex items-center gap-x-2 text-sm font-medium">
-            <i class="fa-solid fa-google text-[#4285F4]"></i>
-            <span>Google Premier Partner</span>
-          </div>
-          <div class="h-6 w-px bg-gray-300"></div>
-          <div class="text-sm font-medium">
-            Clutch • Top Google Ads Agency 2025
-          </div>
-          <div class="h-6 w-px bg-gray-300"></div>
-          <div class="flex items-center gap-x-8 text-2xl font-light">
-            <span class="font-semibold text-gray-400">✓</span>
-            <span>Meta</span>
-            <span>Bing</span>
-            <span>LinkedIn</span>
-          </div>
+    <div class="trust-bar">
+      <div class="trust-track">
+        <div class="trust-item">
+          <i class="fa-brands fa-google"></i> Google Premier Partner
         </div>
+        <div class="trust-sep">·</div>
+        <div class="trust-item">
+          <i class="fa-solid fa-star" style="color: var(--gold)"></i> Clutch Top
+          Agency 2025
+        </div>
+        <div class="trust-sep">·</div>
+        <div class="trust-item">
+          <i class="fa-solid fa-shield-halved"></i> 200+ Service Niches
+        </div>
+        <div class="trust-sep">·</div>
+        <div class="trust-item">
+          <i class="fa-brands fa-meta"></i> Meta Certified
+        </div>
+        <div class="trust-sep">·</div>
+        <div class="trust-item">
+          <i class="fa-brands fa-microsoft"></i> Bing Ads Partner
+        </div>
+        <div class="trust-sep">·</div>
+        <div class="trust-item">
+          <i class="fa-brands fa-linkedin"></i> LinkedIn Ads
+        </div>
+        <div class="trust-sep">·</div>
+        <div class="trust-item">
+          <i class="fa-solid fa-chart-line"></i> Avg 6.8x ROAS
+        </div>
+        <div class="trust-sep">·</div>
+        <!-- repeat for infinite scroll -->
+        <div class="trust-item">
+          <i class="fa-brands fa-google"></i> Google Premier Partner
+        </div>
+        <div class="trust-sep">·</div>
+        <div class="trust-item">
+          <i class="fa-solid fa-star" style="color: var(--gold)"></i> Clutch Top
+          Agency 2025
+        </div>
+        <div class="trust-sep">·</div>
+        <div class="trust-item">
+          <i class="fa-solid fa-shield-halved"></i> 200+ Service Niches
+        </div>
+        <div class="trust-sep">·</div>
+        <div class="trust-item">
+          <i class="fa-brands fa-meta"></i> Meta Certified
+        </div>
+        <div class="trust-sep">·</div>
+        <div class="trust-item">
+          <i class="fa-brands fa-microsoft"></i> Bing Ads Partner
+        </div>
+        <div class="trust-sep">·</div>
+        <div class="trust-item">
+          <i class="fa-brands fa-linkedin"></i> LinkedIn Ads
+        </div>
+        <div class="trust-sep">·</div>
+        <div class="trust-item">
+          <i class="fa-solid fa-chart-line"></i> Avg 6.8x ROAS
+        </div>
+        <div class="trust-sep">·</div>
       </div>
     </div>
 
-    <!-- VISION / MISSION -->
-    <section id="about" class="py-24 bg-gray-50">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="grid md:grid-cols-12 gap-16 items-center">
-          <div class="md:col-span-5">
-            <div class="sticky top-28">
-              <div
-                class="inline-flex items-center gap-x-2 px-5 py-2 bg-white rounded-3xl border text-sm mb-6"
-              >
-                <span class="text-[#EEC013]">★</span>
-                <span class="font-semibold text-[#1E2A78]">Our Promise</span>
-              </div>
-              <h2
-                class="heading-font text-5xl font-semibold tracking-tighter leading-none text-[#1E2A78]"
-              >
-                The most trusted Google Ads growth partner for service
-                businesses
-              </h2>
-              <div class="mt-8 space-y-6 text-lg">
-                <div class="flex gap-4">
-                  <div
-                    class="w-6 h-6 flex-shrink-0 bg-[#EEC013] text-[#1E2A78] rounded-2xl flex items-center justify-center font-bold text-sm"
-                  >
-                    V
-                  </div>
-                  <div>
-                    <div class="font-semibold">Vision</div>
-                    <p class="text-gray-600">
-                      To become the most trusted Google Ads growth partner
-                      worldwide.
-                    </p>
-                  </div>
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-inner">
+        <div class="about-grid">
+          <div class="about-sticky reveal">
+            <div class="section-label label-gold">★ Our Promise</div>
+            <h2 class="section-title">
+              The most trusted Google Ads growth partner
+            </h2>
+            <p class="section-sub">
+              Built exclusively for service businesses that are serious about
+              scaling with performance advertising.
+            </p>
+            <div class="promises">
+              <div class="promise-item">
+                <div class="promise-icon pi-gold">V</div>
+                <div>
+                  <div class="promise-title">Vision</div>
+                  <p class="promise-text">
+                    To become the most trusted Google Ads growth partner
+                    worldwide for service-based businesses.
+                  </p>
                 </div>
-                <div class="flex gap-4">
-                  <div
-                    class="w-6 h-6 flex-shrink-0 bg-[#3F5ED9] text-white rounded-2xl flex items-center justify-center font-bold text-sm"
-                  >
-                    M
-                  </div>
-                  <div>
-                    <div class="font-semibold">Mission</div>
-                    <p class="text-gray-600">
-                      Deliver consistent ROI, radical transparency, and
-                      strategies that actually move the needle.
-                    </p>
-                  </div>
+              </div>
+              <div class="promise-item">
+                <div class="promise-icon pi-blue">M</div>
+                <div>
+                  <div class="promise-title">Mission</div>
+                  <p class="promise-text">
+                    Deliver consistent ROI, radical transparency, and strategies
+                    that actually move the needle — every single month.
+                  </p>
                 </div>
               </div>
             </div>
           </div>
-
-          <div class="md:col-span-7">
-            <div class="bg-white p-10 rounded-3xl shadow-sm border">
-              <h3 class="font-semibold text-2xl mb-8 flex items-center gap-x-3">
-                <span class="text-[#EEC013]"
-                  >Why Service Businesses Choose Us</span
-                >
-              </h3>
-              <div class="grid sm:grid-cols-2 gap-8">
-                <div class="space-y-6">
-                  <div class="flex gap-4">
-                    <i
-                      class="fa-solid fa-chart-line text-3xl text-[#3F5ED9]"
-                    ></i>
-                    <div>
-                      <div class="font-semibold mb-1">
-                        Hyper-Targeted Campaigns
-                      </div>
-                      <div class="text-gray-600 text-sm">
-                        We speak your industry language and target
-                        decision-makers who are ready to buy.
-                      </div>
-                    </div>
-                  </div>
-                  <div class="flex gap-4">
-                    <i
-                      class="fa-solid fa-shield-halved text-3xl text-[#3F5ED9]"
-                    ></i>
-                    <div>
-                      <div class="font-semibold mb-1">Radical Transparency</div>
-                      <div class="text-gray-600 text-sm">
-                        Weekly reports, live dashboards, and zero hidden fees.
-                      </div>
-                    </div>
-                  </div>
+          <div class="why-card reveal reveal-delay-2">
+            <h3>Why Service Businesses Choose Us</h3>
+            <div class="why-grid">
+              <div class="why-item">
+                <div class="why-icon">📈</div>
+                <div>
+                  <div class="why-item-title">Hyper-Targeted Campaigns</div>
+                  <p class="why-item-text">
+                    We speak your industry language and target decision-makers
+                    who are ready to buy right now.
+                  </p>
                 </div>
-                <div class="space-y-6">
-                  <div class="flex gap-4">
-                    <i class="fa-solid fa-bullseye text-3xl text-[#3F5ED9]"></i>
-                    <div>
-                      <div class="font-semibold mb-1">Proven Frameworks</div>
-                      <div class="text-gray-600 text-sm">
-                        Tested across 200+ service niches with average 6.8x
-                        ROAS.
-                      </div>
-                    </div>
-                  </div>
-                  <div class="flex gap-4">
-                    <i
-                      class="fa-solid fa-handshake text-3xl text-[#3F5ED9]"
-                    ></i>
-                    <div>
-                      <div class="font-semibold mb-1">True Partnership</div>
-                      <div class="text-gray-600 text-sm">
-                        We treat your business like our own. Your success is our
-                        only KPI.
-                      </div>
-                    </div>
-                  </div>
+              </div>
+              <div class="why-item">
+                <div class="why-icon">🔍</div>
+                <div>
+                  <div class="why-item-title">Radical Transparency</div>
+                  <p class="why-item-text">
+                    Weekly reports, live dashboards, and absolutely zero hidden
+                    fees or vanity metrics.
+                  </p>
+                </div>
+              </div>
+              <div class="why-item">
+                <div class="why-icon">🎯</div>
+                <div>
+                  <div class="why-item-title">Proven Frameworks</div>
+                  <p class="why-item-text">
+                    Tested across 200+ service niches with an average 6.8x ROAS
+                    across all active accounts.
+                  </p>
+                </div>
+              </div>
+              <div class="why-item">
+                <div class="why-icon">🤝</div>
+                <div>
+                  <div class="why-item-title">True Partnership</div>
+                  <p class="why-item-text">
+                    We treat your business like our own. Your revenue growth is
+                    the only KPI that matters to us.
+                  </p>
                 </div>
               </div>
             </div>
@@ -416,147 +1860,249 @@
     </section>
 
     <!-- SERVICES -->
-    <section id="services" class="py-24">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center mb-16">
-          <span
-            class="px-5 py-2 bg-[#EEC013] text-[#1E2A78] rounded-3xl text-sm font-semibold"
-            >SERVICES</span
-          >
-          <h2 class="heading-font text-5xl font-semibold mt-4 tracking-tighter">
+    <section id="services" class="services-bg">
+      <div class="section-inner">
+        <div class="reveal" style="text-align: center">
+          <div class="section-label label-blue" style="margin: 0 auto">
+            SERVICES
+          </div>
+          <h2 class="section-title" style="margin-top: 1rem">
             End-to-End Google Ads Mastery
           </h2>
+          <p class="section-sub" style="margin: 1rem auto 0">
+            Everything you need to dominate your market with paid search — built
+            and managed by specialists.
+          </p>
         </div>
-
-        <div class="grid md:grid-cols-3 gap-8">
-          <!-- Card 1 -->
-          <div
-            class="service-card bg-white border border-gray-100 rounded-3xl p-8 group"
-          >
-            <div
-              class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition"
-            >
-              📈
-            </div>
-            <h3 class="text-2xl font-semibold mb-3">
-              Search &amp; Performance Max
-            </h3>
-            <p class="text-gray-600">
-              High-intent keyword strategies + AI-powered Performance Max
+        <div class="services-grid">
+          <div class="service-card reveal reveal-delay-1">
+            <div class="card-icon-wrap ci-blue">📈</div>
+            <h3 class="card-title">Search & Performance Max</h3>
+            <p class="card-text">
+              High-intent keyword strategies plus AI-powered Performance Max
               campaigns that convert browsers into booked calls.
             </p>
-            <ul class="mt-8 space-y-3 text-sm">
-              <li class="flex items-center gap-x-2">
-                <i class="fa-solid fa-check text-emerald-500"></i> Competitor
-                keyword crushing
+            <ul class="card-list">
+              <li>
+                <i class="fa-solid fa-check"></i> Competitor keyword crushing
               </li>
-              <li class="flex items-center gap-x-2">
-                <i class="fa-solid fa-check text-emerald-500"></i> Negative
-                keyword mastery
+              <li>
+                <i class="fa-solid fa-check"></i> Negative keyword mastery
               </li>
-              <li class="flex items-center gap-x-2">
-                <i class="fa-solid fa-check text-emerald-500"></i> Dynamic
-                remarketing
+              <li><i class="fa-solid fa-check"></i> Dynamic remarketing</li>
+              <li>
+                <i class="fa-solid fa-check"></i> Smart bidding optimization
               </li>
             </ul>
           </div>
-
-          <!-- Card 2 -->
-          <div
-            class="service-card bg-white border border-gray-100 rounded-3xl p-8 group"
-          >
-            <div
-              class="w-14 h-14 bg-amber-100 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition"
-            >
-              🎯
-            </div>
-            <h3 class="text-2xl font-semibold mb-3">Lead Generation Systems</h3>
-            <p class="text-gray-600">
+          <div class="service-card reveal reveal-delay-2">
+            <div class="card-icon-wrap ci-amber">🎯</div>
+            <h3 class="card-title">Lead Generation Systems</h3>
+            <p class="card-text">
               Custom lead funnels built specifically for consultants, agencies,
               coaches, and B2B service providers.
             </p>
-            <ul class="mt-8 space-y-3 text-sm">
-              <li class="flex items-center gap-x-2">
-                <i class="fa-solid fa-check text-emerald-500"></i>
-                High-converting landing pages
+            <ul class="card-list">
+              <li>
+                <i class="fa-solid fa-check"></i> High-converting landing pages
               </li>
-              <li class="flex items-center gap-x-2">
-                <i class="fa-solid fa-check text-emerald-500"></i> Call tracking
-                &amp; CRM integration
+              <li>
+                <i class="fa-solid fa-check"></i> Call tracking & CRM
+                integration
               </li>
-              <li class="flex items-center gap-x-2">
-                <i class="fa-solid fa-check text-emerald-500"></i> Appointment
-                booking automation
+              <li>
+                <i class="fa-solid fa-check"></i> Appointment booking automation
               </li>
+              <li><i class="fa-solid fa-check"></i> Lead quality scoring</li>
             </ul>
           </div>
-
-          <!-- Card 3 -->
-          <div
-            class="service-card bg-white border border-gray-100 rounded-3xl p-8 group"
-          >
-            <div
-              class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition"
-            >
-              📊
-            </div>
-            <h3 class="text-2xl font-semibold mb-3">Audit + Optimization</h3>
-            <p class="text-gray-600">
-              Full account teardown + 90-day optimization sprint. Fix leaks and
-              unlock hidden growth.
+          <div class="service-card reveal reveal-delay-3">
+            <div class="card-icon-wrap ci-purple">📊</div>
+            <h3 class="card-title">Audit + Optimization</h3>
+            <p class="card-text">
+              Full account teardown + 90-day optimization sprint to fix leaks
+              and unlock hidden growth in your campaigns.
             </p>
-            <div class="mt-12 pt-8 border-t text-center">
-              <span class="text-4xl font-bold text-[#3F5ED9]">Free</span>
-              <span class="block text-sm text-gray-500"
-                >Google Ads Account Audit</span
-              >
+            <div class="card-badge">
+              <div class="card-badge-val">Free</div>
+              <div class="card-badge-label">Google Ads Account Audit</div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- STATS -->
+    <section class="stats-section">
+      <div class="section-inner">
+        <div class="reveal" style="text-align: center">
+          <div
+            class="section-label"
+            style="
+              background: rgba(240, 193, 48, 0.12);
+              color: var(--gold);
+              border: 1px solid rgba(240, 193, 48, 0.2);
+              margin: 0 auto;
+            "
+          >
+            By The Numbers
+          </div>
+          <h2 class="section-title" style="color: #fff; margin-top: 1rem">
+            Results that speak<br />for themselves
+          </h2>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card reveal reveal-delay-1">
+            <div class="stat-icon">📈</div>
+            <div class="stat-val">6.8x</div>
+            <div class="stat-label">Average ROAS across all accounts</div>
+          </div>
+          <div class="stat-card reveal reveal-delay-2">
+            <div class="stat-icon">🚀</div>
+            <div class="stat-val">+412%</div>
+            <div class="stat-label">Average lead volume growth</div>
+          </div>
+          <div class="stat-card reveal reveal-delay-3">
+            <div class="stat-icon">💰</div>
+            <div class="stat-val">$47M+</div>
+            <div class="stat-label">Client revenue generated</div>
+          </div>
+          <div class="stat-card reveal reveal-delay-4">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-val">200+</div>
+            <div class="stat-label">Service niches mastered</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- RESULTS -->
-    <section id="results" class="py-24 bg-[#1E2A78] text-white">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="grid md:grid-cols-12 gap-12 items-center">
-          <div class="md:col-span-5">
-            <h2 class="heading-font text-5xl font-semibold tracking-tighter">
-              Real businesses.<br />Real results.
-            </h2>
-            <div class="mt-12 grid grid-cols-2 gap-8">
-              <div>
-                <div class="stat-number font-semibold text-[#EEC013]">6.8x</div>
-                <div class="text-white/70">Average ROAS</div>
+    <section id="results">
+      <div class="section-inner">
+        <div class="reveal">
+          <div class="section-label label-gold">Real Businesses</div>
+          <h2 class="section-title">Real results, real clients.</h2>
+          <p class="section-sub">
+            Verified campaign outcomes from active clients across different
+            service industries.
+          </p>
+        </div>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3.5rem;
+          "
+        >
+          <div class="result-card reveal reveal-delay-1">
+            <div class="result-header">
+              <div class="client-info">
+                <div class="client-avatar ca-blue">PP</div>
+                <div>
+                  <div class="client-name">Premium Plumbing Co.</div>
+                  <div class="client-niche">Home Services</div>
+                </div>
               </div>
               <div>
-                <div class="stat-number font-semibold">+412%</div>
-                <div class="text-white/70">Avg. lead growth</div>
+                <div class="result-revenue">$428K</div>
+                <span class="result-growth">+287% revenue</span>
+              </div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-label">
+                <span>Campaign progress</span><span>87%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" data-width="87%"></div>
+              </div>
+            </div>
+            <div class="result-metrics">
+              <div class="rm-item">
+                <div class="rm-val">8.1x</div>
+                <div class="rm-label">ROAS</div>
+              </div>
+              <div class="rm-item">
+                <div class="rm-val">$14</div>
+                <div class="rm-label">CPL</div>
+              </div>
+              <div class="rm-item">
+                <div class="rm-val">4mo</div>
+                <div class="rm-label">Timeline</div>
               </div>
             </div>
           </div>
-
-          <div class="md:col-span-7">
-            <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8">
-              <div class="flex items-center justify-between mb-8">
-                <div class="flex items-center gap-x-4">
-                  <div class="w-12 h-12 bg-white rounded-2xl"></div>
-                  <div>
-                    <div class="font-semibold">Premium Plumbing Co.</div>
-                    <div class="text-emerald-400 text-sm">
-                      +287% revenue in 4 months
-                    </div>
-                  </div>
-                </div>
-                <div class="text-right">
-                  <div class="text-4xl font-bold">$428K</div>
-                  <div class="text-xs uppercase tracking-widest">
-                    Additional Revenue
-                  </div>
+          <div class="result-card reveal reveal-delay-2">
+            <div class="result-header">
+              <div class="client-info">
+                <div class="client-avatar ca-green">EH</div>
+                <div>
+                  <div class="client-name">Elite HVAC Solutions</div>
+                  <div class="client-niche">HVAC Services</div>
                 </div>
               </div>
-              <div class="h-2 bg-white/20 rounded-full overflow-hidden">
-                <div class="h-full w-[87%] bg-[#EEC013] rounded-full"></div>
+              <div>
+                <div class="result-revenue">$312K</div>
+                <span class="result-growth">+194% leads</span>
+              </div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-label">
+                <span>Campaign progress</span><span>72%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" data-width="72%"></div>
+              </div>
+            </div>
+            <div class="result-metrics">
+              <div class="rm-item">
+                <div class="rm-val">6.4x</div>
+                <div class="rm-label">ROAS</div>
+              </div>
+              <div class="rm-item">
+                <div class="rm-val">$21</div>
+                <div class="rm-label">CPL</div>
+              </div>
+              <div class="rm-item">
+                <div class="rm-val">3mo</div>
+                <div class="rm-label">Timeline</div>
+              </div>
+            </div>
+          </div>
+          <div class="result-card reveal reveal-delay-3">
+            <div class="result-header">
+              <div class="client-info">
+                <div class="client-avatar ca-purple">AC</div>
+                <div>
+                  <div class="client-name">Apex Consulting Group</div>
+                  <div class="client-niche">B2B Consulting</div>
+                </div>
+              </div>
+              <div>
+                <div class="result-revenue">$186K</div>
+                <span class="result-growth">+623% qualified leads</span>
+              </div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-label">
+                <span>Campaign progress</span><span>94%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" data-width="94%"></div>
+              </div>
+            </div>
+            <div class="result-metrics">
+              <div class="rm-item">
+                <div class="rm-val">9.2x</div>
+                <div class="rm-label">ROAS</div>
+              </div>
+              <div class="rm-item">
+                <div class="rm-val">$9</div>
+                <div class="rm-label">CPL</div>
+              </div>
+              <div class="rm-item">
+                <div class="rm-val">6mo</div>
+                <div class="rm-label">Timeline</div>
               </div>
             </div>
           </div>
@@ -565,60 +2111,56 @@
     </section>
 
     <!-- TESTIMONIALS -->
-    <section id="testimonials" class="py-24">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center mb-12">
-          <h2 class="heading-font text-5xl font-semibold tracking-tighter">
-            Don’t take our word for it
+    <section id="testimonials" class="testimonials-bg">
+      <div class="section-inner">
+        <div class="reveal" style="text-align: center">
+          <div class="section-label label-blue" style="margin: 0 auto">
+            Client Stories
+          </div>
+          <h2 class="section-title" style="margin-top: 1rem">
+            Don't take our word for it
           </h2>
         </div>
-
-        <div class="grid md:grid-cols-3 gap-8">
-          <div class="bg-white p-8 rounded-3xl border">
-            <div class="flex gap-x-1 text-[#EEC013] mb-6">★★★★☆</div>
-            <p class="italic text-lg">
-              "We went from 12 leads/month to 87 qualified leads. Best
-              investment we've ever made in marketing."
+        <div class="testi-grid">
+          <div class="testi-card reveal reveal-delay-1">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">
+              We went from 12 leads per month to 87 qualified leads. Best
+              marketing investment we've ever made — and we've tried them all.
             </p>
-            <div class="mt-10 flex items-center gap-x-4">
-              <div class="w-12 h-12 bg-gray-200 rounded-2xl"></div>
+            <div class="testi-author">
+              <div class="testi-avatar ta-1">MT</div>
               <div>
-                <div class="font-semibold">Michael Torres</div>
-                <div class="text-sm text-gray-500">CEO, Apex Consulting</div>
+                <div class="testi-name">Michael Torres</div>
+                <div class="testi-role">CEO, Apex Consulting</div>
               </div>
             </div>
           </div>
-
-          <div class="bg-white p-8 rounded-3xl border">
-            <div class="flex gap-x-1 text-[#EEC013] mb-6">★★★★★</div>
-            <p class="italic text-lg">
-              "Finally an agency that actually understands service businesses.
-              Their transparency is unmatched."
+          <div class="testi-card reveal reveal-delay-2">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">
+              Finally an agency that actually understands service businesses.
+              Their transparency is unmatched. I know where every dollar goes.
             </p>
-            <div class="mt-10 flex items-center gap-x-4">
-              <div class="w-12 h-12 bg-gray-200 rounded-2xl"></div>
+            <div class="testi-author">
+              <div class="testi-avatar ta-2">SP</div>
               <div>
-                <div class="font-semibold">Sarah Patel</div>
-                <div class="text-sm text-gray-500">
-                  Founder, LegalShield Partners
-                </div>
+                <div class="testi-name">Sarah Patel</div>
+                <div class="testi-role">Founder, LegalShield Partners</div>
               </div>
             </div>
           </div>
-
-          <div class="bg-white p-8 rounded-3xl border">
-            <div class="flex gap-x-1 text-[#EEC013] mb-6">★★★★★</div>
-            <p class="italic text-lg">
-              "Cut our cost per lead by 64% while increasing quality. Google Ads
-              Bro is now our unfair advantage."
+          <div class="testi-card reveal reveal-delay-3">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">
+              Cut our cost per lead by 64% while increasing quality 3x. Google
+              Ads Bro is now our single biggest unfair competitive advantage.
             </p>
-            <div class="mt-10 flex items-center gap-x-4">
-              <div class="w-12 h-12 bg-gray-200 rounded-2xl"></div>
+            <div class="testi-author">
+              <div class="testi-avatar ta-3">DC</div>
               <div>
-                <div class="font-semibold">David Chen</div>
-                <div class="text-sm text-gray-500">
-                  Director of Growth, Elite HVAC
-                </div>
+                <div class="testi-name">David Chen</div>
+                <div class="testi-role">Director of Growth, Elite HVAC</div>
               </div>
             </div>
           </div>
@@ -626,130 +2168,425 @@
       </div>
     </section>
 
-    <!-- FINAL CTA -->
-    <section
-      id="contact"
-      class="py-28 bg-gradient-to-br from-[#1E2A78] to-[#3F5ED9] text-white"
-    >
-      <div class="max-w-4xl mx-auto text-center px-6">
-        <h2 class="heading-font text-6xl font-semibold tracking-tighter mb-6">
-          Ready to 10x your Google Ads ROI?
-        </h2>
-        <p class="text-2xl text-white/80 mb-12">
-          Get a free, no-BS Google Ads audit + growth roadmap in under 48 hours.
-        </p>
-
-        <form class="max-w-lg mx-auto space-y-6">
-          <div class="grid grid-cols-2 gap-6">
-            <input
-              type="text"
-              placeholder="First name"
-              class="bg-white/10 border border-white/30 rounded-3xl px-7 py-6 placeholder:text-white/50 focus:outline-none focus:border-[#EEC013]"
-            />
-            <input
-              type="text"
-              placeholder="Business name"
-              class="bg-white/10 border border-white/30 rounded-3xl px-7 py-6 placeholder:text-white/50 focus:outline-none focus:border-[#EEC013]"
-            />
-          </div>
-          <input
-            type="email"
-            placeholder="Business email"
-            class="w-full bg-white/10 border border-white/30 rounded-3xl px-7 py-6 placeholder:text-white/50 focus:outline-none focus:border-[#EEC013]"
-          />
-
-          <button
-            type="button"
-            class="w-full py-7 bg-[#EEC013] hover:bg-yellow-300 transition-all text-[#1E2A78] font-semibold text-xl rounded-3xl mt-4"
+    <!-- CTA -->
+    <section id="contact" class="cta-section">
+      <canvas id="cta-canvas"></canvas>
+      <div class="section-inner">
+        <div class="cta-inner reveal">
+          <div
+            class="section-label"
+            style="
+              background: rgba(240, 193, 48, 0.12);
+              color: var(--gold);
+              border: 1px solid rgba(240, 193, 48, 0.2);
+              margin: 0 auto;
+            "
           >
-            YES — Send My Free Audit
-          </button>
-        </form>
-
-        <p class="text-white/60 text-sm mt-8">
-          Zero spam. Zero sales calls unless you want them.
-        </p>
+            Free Audit
+          </div>
+          <h2 style="margin-top: 1.2rem">
+            Ready to <span>10x</span> your<br />Google Ads ROI?
+          </h2>
+          <p class="cta-sub">
+            Get a free, no-BS Google Ads audit + growth roadmap delivered in
+            under 48 hours.
+          </p>
+          <div class="cta-form">
+            <div class="form-row">
+              <input type="text" class="form-input" placeholder="First name" />
+              <input
+                type="text"
+                class="form-input"
+                placeholder="Business name"
+              />
+            </div>
+            <input
+              type="email"
+              class="form-input"
+              placeholder="Business email address"
+            />
+            <input
+              type="url"
+              class="form-input"
+              placeholder="Website URL (optional)"
+            />
+            <button class="btn-cta">YES — Send My Free Audit →</button>
+          </div>
+          <p class="form-note">
+            Zero spam. Zero sales calls unless you want them. Audit delivered in
+            48hrs.
+          </p>
+        </div>
       </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="bg-[#0F172A] text-white/70 py-20">
-      <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-12 gap-y-12">
-        <div class="md:col-span-5">
-          <div class="flex items-center gap-x-3 mb-6">
-            <div
-              class="flex items-center justify-center w-9 h-9 bg-[#3F5ED9] rounded-2xl relative"
-            >
-              <div class="flex gap-0.5">
-                <div class="w-1.5 h-5 bg-white rounded"></div>
-                <div class="w-1.5 h-7 bg-white rounded"></div>
-                <div class="w-1.5 h-4 bg-white rounded"></div>
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <a href="#" class="logo">
+              <div class="logo-mark">
+                <div class="logo-bars">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="logo-dot">B</div>
               </div>
-            </div>
-            <span class="heading-font text-3xl font-semibold tracking-tighter"
-              >Google Ads Bro</span
+              <span class="logo-text" style="color: #fff">Google Ads Bro</span>
+            </a>
+            <p>
+              Helping service businesses grow faster through high-performance
+              Google Ads campaigns with radical transparency.
+            </p>
+            <div
+              style="
+                margin-top: 1.5rem;
+                font-size: 0.78rem;
+                color: rgba(255, 255, 255, 0.2);
+              "
             >
-          </div>
-          <p class="max-w-xs">
-            Helping service businesses grow faster through high-performance
-            Google Ads.
-          </p>
-          <div class="mt-8 text-xs">
-            © 2026 Google Ads Bro. All rights reserved.
-          </div>
-        </div>
-
-        <div class="md:col-span-2">
-          <div class="font-medium text-white mb-4">Company</div>
-          <div class="space-y-3 text-sm">
-            <div>About</div>
-            <div>Our Process</div>
-            <div>Case Studies</div>
-          </div>
-        </div>
-
-        <div class="md:col-span-2">
-          <div class="font-medium text-white mb-4">Resources</div>
-          <div class="space-y-3 text-sm">
-            <div>Free Audit</div>
-            <div>Blog</div>
-            <div>Google Ads Guides</div>
-          </div>
-        </div>
-
-        <div class="md:col-span-3">
-          <div class="bg-white/5 border border-white/10 rounded-3xl p-6">
-            <div class="text-[#EEC013] text-sm font-medium mb-2">
-              NEXT OPEN SLOT
+              © 2026 Google Ads Bro. All rights reserved.
             </div>
-            <div class="text-4xl font-semibold mb-1">May 27</div>
-            <div class="text-sm">Book your strategy call</div>
-            <button
-              class="mt-6 text-sm bg-white text-black px-6 py-3 rounded-2xl w-full font-medium"
-            >
-              Reserve Your Spot
-            </button>
+          </div>
+          <div>
+            <div class="footer-col-title">Company</div>
+            <div class="footer-links">
+              <a href="#about">About Us</a>
+              <a href="#services">Our Process</a>
+              <a href="#results">Case Studies</a>
+              <a href="#">Careers</a>
+            </div>
+          </div>
+          <div>
+            <div class="footer-col-title">Resources</div>
+            <div class="footer-links">
+              <a href="#contact">Free Audit</a>
+              <a href="#">Blog</a>
+              <a href="#">Google Ads Guides</a>
+              <a href="#">ROI Calculator</a>
+            </div>
+          </div>
+          <div>
+            <div class="footer-slot">
+              <div class="slot-label">Next Open Slot</div>
+              <div class="slot-date">May 27</div>
+              <div class="slot-sub">Book your strategy call</div>
+              <button class="btn-reserve" onclick="scrollTo('contact')">
+                Reserve Your Spot
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>Built with ❤️ for service businesses that want to grow.</span>
+          <div style="display: flex; gap: 1.5rem">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact</a>
           </div>
         </div>
       </div>
     </footer>
 
     <script>
-      // Tailwind script already included via CDN
-      console.log(
-        "%cGoogle Ads Bro Website Ready 🚀",
-        "color:#EEC013; font-family:monospace; font-size:14px",
-      );
-
-      // Simple scroll effect for navbar
-      window.addEventListener("scroll", () => {
-        const nav = document.querySelector("nav");
-        if (window.scrollY > 50) {
-          nav.classList.add("shadow-md");
-        } else {
-          nav.classList.remove("shadow-md");
-        }
+      // ── CURSOR ──
+      const cursor = document.getElementById("cursor");
+      const ring = document.getElementById("cursor-ring");
+      document.addEventListener("mousemove", (e) => {
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
+        setTimeout(() => {
+          ring.style.left = e.clientX + "px";
+          ring.style.top = e.clientY + "px";
+        }, 80);
       });
+
+      // ── NAV SCROLL ──
+      window.addEventListener("scroll", () => {
+        document
+          .getElementById("mainNav")
+          .classList.toggle("scrolled", window.scrollY > 50);
+      });
+
+      // ── SMOOTH SCROLL ──
+      function scrollTo(id) {
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      }
+
+      // ── MOBILE NAV ──
+      function toggleMobileNav() {
+        const nav = document.getElementById("mobileNav");
+        const btn = document.getElementById("hamburgerBtn");
+        const open = nav.classList.toggle("open");
+        nav.style.display = open ? "flex" : "none";
+        btn.querySelectorAll("span")[0].style.transform = open
+          ? "rotate(45deg) translate(5px,5px)"
+          : "";
+        btn.querySelectorAll("span")[1].style.opacity = open ? "0" : "1";
+        btn.querySelectorAll("span")[2].style.transform = open
+          ? "rotate(-45deg) translate(5px,-5px)"
+          : "";
+      }
+      function closeMobileNav() {
+        const nav = document.getElementById("mobileNav");
+        nav.classList.remove("open");
+        nav.style.display = "none";
+        document
+          .getElementById("hamburgerBtn")
+          .querySelectorAll("span")
+          .forEach((s) => {
+            s.style.transform = "";
+            s.style.opacity = "1";
+          });
+      }
+
+      // ── THREE.JS HERO PARTICLE FIELD ──
+      (function () {
+        const canvas = document.getElementById("hero-canvas");
+        const renderer = new THREE.WebGLRenderer({
+          canvas,
+          alpha: true,
+          antialias: true,
+        });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(
+          60,
+          canvas.offsetWidth / canvas.offsetHeight,
+          0.1,
+          1000,
+        );
+        camera.position.z = 5;
+
+        // Particles
+        const count = 1800;
+        const geo = new THREE.BufferGeometry();
+        const pos = new Float32Array(count * 3);
+        const sizes = new Float32Array(count);
+        for (let i = 0; i < count; i++) {
+          pos[i * 3] = (Math.random() - 0.5) * 20;
+          pos[i * 3 + 1] = (Math.random() - 0.5) * 20;
+          pos[i * 3 + 2] = (Math.random() - 0.5) * 15;
+          sizes[i] = Math.random() * 2 + 0.5;
+        }
+        geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+        geo.setAttribute("size", new THREE.BufferAttribute(sizes, 1));
+
+        const mat = new THREE.PointsMaterial({
+          color: 0x3f5ed9,
+          size: 0.04,
+          transparent: true,
+          opacity: 0.6,
+          sizeAttenuation: true,
+        });
+        const particles = new THREE.Points(geo, mat);
+        scene.add(particles);
+
+        // Connecting lines (sparse grid)
+        const lineMat = new THREE.LineBasicMaterial({
+          color: 0x2347d4,
+          transparent: true,
+          opacity: 0.08,
+        });
+        for (let i = 0; i < 30; i++) {
+          const lGeo = new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(
+              (Math.random() - 0.5) * 18,
+              (Math.random() - 0.5) * 18,
+              (Math.random() - 0.5) * 8,
+            ),
+            new THREE.Vector3(
+              (Math.random() - 0.5) * 18,
+              (Math.random() - 0.5) * 18,
+              (Math.random() - 0.5) * 8,
+            ),
+          ]);
+          scene.add(new THREE.Line(lGeo, lineMat));
+        }
+
+        // Glowing orbs
+        const orbGeo = new THREE.SphereGeometry(0.15, 16, 16);
+        const orbColors = [0x3f5ed9, 0xf0c130, 0x2347d4];
+        const orbs = [];
+        for (let i = 0; i < 6; i++) {
+          const m = new THREE.MeshBasicMaterial({
+            color: orbColors[i % 3],
+            transparent: true,
+            opacity: 0.25,
+          });
+          const orb = new THREE.Mesh(orbGeo, m);
+          orb.position.set(
+            (Math.random() - 0.5) * 12,
+            (Math.random() - 0.5) * 10,
+            (Math.random() - 0.5) * 6,
+          );
+          orb.userData = {
+            speed: Math.random() * 0.4 + 0.1,
+            offset: Math.random() * Math.PI * 2,
+          };
+          scene.add(orb);
+          orbs.push(orb);
+        }
+
+        let mouseX = 0,
+          mouseY = 0;
+        document.addEventListener("mousemove", (e) => {
+          mouseX = (e.clientX / window.innerWidth - 0.5) * 0.4;
+          mouseY = -(e.clientY / window.innerHeight - 0.5) * 0.3;
+        });
+
+        window.addEventListener("resize", () => {
+          renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+          camera.aspect = canvas.offsetWidth / canvas.offsetHeight;
+          camera.updateProjectionMatrix();
+        });
+
+        let t = 0;
+        function animate() {
+          requestAnimationFrame(animate);
+          t += 0.006;
+          particles.rotation.y = t * 0.05 + mouseX * 0.3;
+          particles.rotation.x = mouseY * 0.2;
+          orbs.forEach((o, i) => {
+            o.position.y +=
+              Math.sin(t * o.userData.speed + o.userData.offset) * 0.004;
+            o.position.x +=
+              Math.cos(t * o.userData.speed * 0.7 + o.userData.offset) * 0.003;
+            o.material.opacity =
+              0.15 + Math.sin(t * o.userData.speed + o.userData.offset) * 0.1;
+          });
+          renderer.render(scene, camera);
+        }
+        animate();
+      })();
+
+      // ── THREE.JS CTA SUBTLE FIELD ──
+      (function () {
+        const canvas = document.getElementById("cta-canvas");
+        const renderer = new THREE.WebGLRenderer({
+          canvas,
+          alpha: true,
+          antialias: true,
+        });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(
+          50,
+          canvas.offsetWidth / canvas.offsetHeight,
+          0.1,
+          100,
+        );
+        camera.position.z = 6;
+
+        const count = 600;
+        const geo = new THREE.BufferGeometry();
+        const pos = new Float32Array(count * 3);
+        for (let i = 0; i < count; i++) {
+          pos[i * 3] = (Math.random() - 0.5) * 20;
+          pos[i * 3 + 1] = (Math.random() - 0.5) * 12;
+          pos[i * 3 + 2] = (Math.random() - 0.5) * 8;
+        }
+        geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+        const mat = new THREE.PointsMaterial({
+          color: 0xf0c130,
+          size: 0.05,
+          transparent: true,
+          opacity: 0.3,
+          sizeAttenuation: true,
+        });
+        scene.add(new THREE.Points(geo, mat));
+
+        window.addEventListener("resize", () => {
+          renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+          camera.aspect = canvas.offsetWidth / canvas.offsetHeight;
+          camera.updateProjectionMatrix();
+        });
+
+        let t = 0;
+        function animate() {
+          requestAnimationFrame(animate);
+          t += 0.003;
+          scene.children[0].rotation.y = t * 0.08;
+          scene.children[0].rotation.x = t * 0.03;
+          renderer.render(scene, camera);
+        }
+        animate();
+      })();
+
+      // ── SCROLL REVEAL ──
+      const revealEls = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+              observer.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.12 },
+      );
+      revealEls.forEach((el) => observer.observe(el));
+
+      // ── PROGRESS BARS ──
+      const barObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              const fill = e.target.querySelector(".progress-fill");
+              if (fill) fill.style.width = fill.dataset.width;
+              barObserver.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.3 },
+      );
+      document
+        .querySelectorAll(".result-card")
+        .forEach((c) => barObserver.observe(c));
+
+      // ── COUNTER ANIMATION ──
+      function animateCounter(el, target, suffix = "", duration = 2000) {
+        const isDecimal = target % 1 !== 0;
+        let start = 0;
+        const step = (timestamp) => {
+          if (!start) start = timestamp;
+          const progress = Math.min((timestamp - start) / duration, 1);
+          const ease = 1 - Math.pow(1 - progress, 3);
+          const val = isDecimal
+            ? (target * ease).toFixed(1)
+            : Math.floor(target * ease);
+          el.textContent = val + suffix;
+          if (progress < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      }
+
+      const statObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              const vals = e.target.querySelectorAll(".stat-val");
+              vals.forEach((v) => {
+                const txt = v.textContent;
+                if (txt.includes("6.8")) animateCounter(v, 6.8, "x");
+                else if (txt.includes("412")) animateCounter(v, 412, "%", 1500);
+                else if (txt.includes("47")) animateCounter(v, 47, "M+", 1800);
+                else if (txt.includes("200")) animateCounter(v, 200, "+", 1200);
+              });
+              statObserver.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.3 },
+      );
+      document
+        .querySelectorAll(".stats-grid")
+        .forEach((g) => statObserver.observe(g));
     </script>
   </body>
 </html>
